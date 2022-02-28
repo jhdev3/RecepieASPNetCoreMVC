@@ -15,11 +15,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+//order of pipline är viktigt 
 app.UseRouting();
 
 app.UseAuthorization();
-
+//Hur Routing går dvs vilket pattern som används controller -> views -> dvs MVC Modelen:)
+//Det är även så URL blir uppdelad i när man använder MVC :)
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
