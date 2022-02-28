@@ -6,10 +6,10 @@ namespace RecipeWebsiteMVC.Controllers
 {
     public class RecipeManagerController : Controller
     {
-        RepoCache recipeRepo;
+        RepoCache<Recipe> recipeRepo;
         public RecipeManagerController()
         {
-            recipeRepo = new RepoCache();
+            recipeRepo = new RepoCache<Recipe>();
         }
         public IActionResult Index()
         {

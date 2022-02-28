@@ -1,6 +1,8 @@
 ﻿using RecipeWebsiteMVC.Models;
 using RecipeWebsiteMVC.Models.Interfaces;
 using System.Runtime.Caching;
+using System.Linq;
+
 
 namespace RecipeWebsiteMVC.Cache
 {
@@ -11,37 +13,37 @@ namespace RecipeWebsiteMVC.Cache
     //Skapar en Cache istället för Static lists för Models som ska visas och sparas. 
     //Denna struktur skulle kunna implementeras i ett annat projekt för tex en moln Cache DB eller något sådant
     // Om Kummunikation med databasen senare skulle bli ett problem. 
-    public class RepoCache : IReposatory
+    public class RepoCache<T> : IRepository<T> where T : BaseEntity
     {
 
         ObjectCache cache = MemoryCache.Default;
-        List<Recipe> items;
+        List<T> itemsList;
         string className;
 
         public RepoCache()
         {
-            className = typeof(Recipe).Name;
-            items = cache[className] as List<Recipe>;
-            if (items == null)
+            className = typeof(T).Name;
+            itemsList = cache[className] as List<T>;
+            if (itemsList == null)
             {
-                items = new List<Recipe>();
+                itemsList = new List<T>();
             }
         }
 
         private void Commit()
         {
-            cache[className] = items;
+            cache[className] = itemsList;
         }
 
-        public void Insert(Recipe t)
+        public void Insert(T t)
         {
-            items.Add(t);
+            itemsList.Add(t);
             Commit();
         }
 
-        public void Update(Recipe t)
+        public void Update(T t)
         {
-            Recipe tToUpdate = items.Find(i => i.Id == t.Id);
+            T tToUpdate = itemsList.Find(i => i.Id == t.Id);
 
             if (tToUpdate != null)
             {
@@ -55,9 +57,11 @@ namespace RecipeWebsiteMVC.Cache
             }
         }
 
-        public Recipe Find(string Id)
+     
+
+        public T Find(string Id)
         {
-            Recipe t = items.Find(i => i.Id == Id);
+            T t = itemsList.Find(i => i.Id == Id);
             if (t != null)
             {
                 return t;
@@ -68,18 +72,18 @@ namespace RecipeWebsiteMVC.Cache
             }
         }
 
-        public IQueryable<Recipe> Collection()
+        public IQueryable<T> Collection()
         {
-            return items.AsQueryable();
+            return itemsList.AsQueryable();
         }
 
         public void Delete(string Id)
         {
-            Recipe tToDelete = items.Find(i => i.Id == Id);
+            T tToDelete = itemsList.Find(i => i.Id == Id);
 
             if (tToDelete != null)
             {
-                items.Remove(tToDelete);
+                itemsList.Remove(tToDelete);
                 Commit();
 
             }
