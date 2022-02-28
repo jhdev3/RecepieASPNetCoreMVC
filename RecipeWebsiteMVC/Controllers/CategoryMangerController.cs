@@ -1,24 +1,32 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RecipeWebsiteMVC.Cache;
+using RecipeWebsiteMVC.Models;
 
 namespace RecipeWebsiteMVC.Controllers
 {
     public class CategoryMangerController : Controller
     {
+        RepoCache<Category> CategoryRepo;
+
+        public CategoryMangerController()
+        {
+            CategoryRepo = new RepoCache<Category>();       
+        }
         // GET: CategoryMangerController
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return View();
         }
 
         // GET: CategoryMangerController/Details/5
-        public ActionResult Details(string id)
+        public IActionResult Details(string id)
         {
             return View();
         }
 
         // GET: CategoryMangerController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -26,7 +34,7 @@ namespace RecipeWebsiteMVC.Controllers
         // POST: CategoryMangerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create(IFormCollection collection)
         {
             try
             {
@@ -39,7 +47,7 @@ namespace RecipeWebsiteMVC.Controllers
         }
 
         // GET: CategoryMangerController/Edit/5
-        public ActionResult Edit(string id)
+        public IActionResult Edit(string id)
         {
             return View();
         }
@@ -47,7 +55,7 @@ namespace RecipeWebsiteMVC.Controllers
         // POST: CategoryMangerController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(string id, IFormCollection collection)
+        public IActionResult Edit(string id, IFormCollection collection)
         {
             try
             {
@@ -60,7 +68,7 @@ namespace RecipeWebsiteMVC.Controllers
         }
 
         // GET: CategoryMangerController/Delete/5
-        public ActionResult Delete(string id)
+        public IActionResult Delete(string id)
         {
             return View();
         }
@@ -68,7 +76,7 @@ namespace RecipeWebsiteMVC.Controllers
         // POST: CategoryMangerController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(string id, IFormCollection collection)
+        public IActionResult Delete(string id, IFormCollection collection)
         {
             try
             {
