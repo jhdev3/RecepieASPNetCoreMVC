@@ -3,11 +3,11 @@
     /// <summary>
     /// Basic model of what is needed for the recipe model. 
     /// </summary>
-    public class Recipe : BasicProperties
+    public class Recipe : BaseEntity
     {
         public string Title { get; set; }  
         public string Description { get; set; }
-        public string Category { get; set; }
+        public string Category { get; set; } //En sträng och inte ett Category objekt beror på att jag kan vilja ett ett recept har flera kategorier / tagar 
         public string Image { get; set; }
         public int portions { get; set; }
 
