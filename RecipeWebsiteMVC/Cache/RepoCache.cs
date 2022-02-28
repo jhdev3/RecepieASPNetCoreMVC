@@ -9,6 +9,8 @@ namespace RecipeWebsiteMVC.Cache
     /// </summary>
 
     //Skapar en Cache istället för Static lists för Models som ska visas och sparas. 
+    //Denna struktur skulle kunna implementeras i ett annat projekt för tex en moln Cache DB eller något sådant
+    // Om Kummunikation med databasen senare skulle bli ett problem. 
     public class RepoCache : IReposatory
     {
 
