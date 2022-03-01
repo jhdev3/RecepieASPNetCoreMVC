@@ -18,6 +18,7 @@ namespace RecipeWebsiteMVC.Data
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Direction> Directions { get; set; }
         public DbSet<Category> Categories { get; set; }
+        
 
         //Adding CascadeDelete On Ingridient And Direction
         //Cascade Delete Can be Auto now in later version othwerwise i need to configure this below:
