@@ -13,36 +13,34 @@ namespace RecipeWebsiteMVC.Controllers
         {
             CategoryRepo = new RepoCache<Category>();       
         }
-        // GET: CategoryMangerController
+        // GET: CategoryMangerController and listing details
         public IActionResult Index()
         {
-            return View();
-        }
-
-        // GET: CategoryMangerController/Details/5
-        public IActionResult Details(string id)
-        {
-            return View();
+            List<Category> categories = CategoryRepo.Collection().ToList(); 
+            return View(categories);
         }
 
         // GET: CategoryMangerController/Create
         public IActionResult Create()
         {
-            return View();
+            Category category = new Category(); 
+            return View(category);
         }
 
         // POST: CategoryMangerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(IFormCollection collection)
+        public IActionResult Create(Category c)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                return View(c);
             }
-            catch
+            else
             {
-                return View();
+                CategoryRepo.Insert(c);
+
+                return RedirectToAction("Index");
             }
         }
 

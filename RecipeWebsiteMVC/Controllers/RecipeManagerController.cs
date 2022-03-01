@@ -17,20 +17,10 @@ namespace RecipeWebsiteMVC.Controllers
             return View(recipes);
         }
 
-        //Fördelen med att använda ett Interface som ActionReuslt eller ActionReuslt
-        // Är att det går att retunera olika typer av Actions eftersom det är ett Interface
-        /* Tex :
-        public ViewResult Delete(string id)
-        {
-            if (id != null)
-            {
-                return PartialView("Index", new { id });
-            }
-            return View();
-            
-        } 
-        Mer Info om result types https://docs.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-6.0
-         */
+        //Fördelen med att använda ett IActionReuslt eller ActionReuslt istället för tex ViewReuslt
+        // Är att det går att retunera olika typer av Actions
+        // Mer Info om result types https://docs.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-6.0
+         
         public IActionResult Create()
         {
             var recipe = new Recipe();
