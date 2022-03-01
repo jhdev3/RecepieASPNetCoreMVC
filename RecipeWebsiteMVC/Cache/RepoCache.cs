@@ -9,7 +9,7 @@ namespace RecipeWebsiteMVC.Cache
     /// <summary>
     /// Creates temp Dictionary repos for accesing cache instead of DB  
     /// </summary>
-
+    
     //Skapar en Cache istället för Static lists för Models som ska visas och sparas. 
     //Denna struktur skulle kunna implementeras i ett annat projekt för tex en moln Cache DB eller något sådant
     // Om Kummunikation med databasen senare skulle bli ett problem. 
@@ -17,6 +17,11 @@ namespace RecipeWebsiteMVC.Cache
     //Tanken var även att använda Irepo i SQLAcces även där och använda interfacet i alla Controllers som använder som hanterar data.
     //I tidigare versioner av .Net core fanns App start och det gick att mapa sina repos där så att man kunde använda Interfacet överallt.
     //Nu vet jag inte riktigt hur jag ska åstakomma det på samma sätt :)
+  
+    
+    /* To Be Continued This setup Failed when implementing db and
+     * Repo Pattern Need to change a bit not much but a bit 
+     * 
     public class RepoCache<T> : IRepository<T> where T : BaseEntity
     {
 
@@ -116,5 +121,5 @@ namespace RecipeWebsiteMVC.Cache
         }
 
     }
-
+  */
 }

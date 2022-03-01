@@ -14,12 +14,9 @@ namespace RecipeWebsiteMVC.Models
     {
         public double? Unit { get; set; }
         public string? UnitType { get; set; }
-        public string Name { get; set; }    
-        
-        [Required]
-        [ForeignKey("Recipe")]
-        public string RecipeId { get; set; }        
+        public string Name { get; set; }
 
+        public string RecipeId { get; set; }
 
     }
 }
