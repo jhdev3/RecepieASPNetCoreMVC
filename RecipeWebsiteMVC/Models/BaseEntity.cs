@@ -15,5 +15,9 @@ namespace RecipeWebsiteMVC.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public DateTime DateOfCreation { get; set; } = DateTime.Now;
 
+        public DateTime? EditedAt { get; set;}
+
+
+
     }
 }
