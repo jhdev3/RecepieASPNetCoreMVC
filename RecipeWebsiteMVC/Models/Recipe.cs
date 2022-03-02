@@ -11,8 +11,8 @@
         public string Image { get; set; }
         public int Portions { get; set; }
 
-        public IList<Direction> Directions { get; set; }         
-        public IList<Ingredient> Ingredients { get; set; }
+        public IList<Direction>? Directions { get; set; }         
+        public IList<Ingredient>? Ingredients { get; set; }
 
 
         ///// <summary>
