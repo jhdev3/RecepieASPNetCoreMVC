@@ -21,15 +21,15 @@ namespace RecipeWebsiteMVC.Controllers
             _context = context;
         }
 
-        // GET: ManagerCategories
-        public async Task<IActionResult> Index()//Skapar en ny tråd
+        // GET: A list of all Categories and a way to mange them
+        public async Task<IActionResult> Index()//krävs en Async metod för att kunna använda await vilket är viktigt/ ett måste om man använder sig av Aync metoder  
         {
             //Eftersom jag här använder Async för Iaction result och jag väntar på min databas att hämta hela DBSet / Tabellen
             //Används Async Metoderna är det super viktigt att programmet väntar in med Await :)
             return View(await _context.Categories.ToListAsync());
         }
 
-        // GET: ManagerCategories/Details/5
+        // GET: ManagerCategories/Details/
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -47,7 +47,7 @@ namespace RecipeWebsiteMVC.Controllers
             return View(category);
         }
 
-        // GET: ManagerCategories/Create
+        // GET: ManagerCategories/Create View med formulär för create
         public IActionResult Create()
         {
             return View();
@@ -69,7 +69,7 @@ namespace RecipeWebsiteMVC.Controllers
             return View(category);
         }
 
-        // GET: ManagerCategories/Edit/5
+        // GET: ManagerCategories/Edit/
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -85,9 +85,8 @@ namespace RecipeWebsiteMVC.Controllers
             return View(category);
         }
 
-        // POST: ManagerCategories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: ManagerCategories/Edit/
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, Category category)
@@ -131,7 +130,7 @@ namespace RecipeWebsiteMVC.Controllers
             }
 
             var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -142,7 +141,7 @@ namespace RecipeWebsiteMVC.Controllers
 
         // POST: ManagerCategories/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] //Prevent Cross site attacks 
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var category = await _context.Categories.FindAsync(id);
