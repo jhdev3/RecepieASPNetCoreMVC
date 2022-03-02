@@ -6,8 +6,6 @@ namespace RecipeWebsiteMVC.Models
     {
         public string Text { get; set; }    
        
-        [ForeignKey("Recipe")]
         public string RecipeId { get; set; }    
-        
     }
 }
