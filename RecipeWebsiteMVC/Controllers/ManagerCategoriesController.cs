@@ -129,8 +129,8 @@ namespace RecipeWebsiteMVC.Controllers
                 return NotFound();
             }
 
-            var category = await _dBcontext.Categories
-                .FirstOrDefaultAsync(c => c.Id == id);
+            var category = await _dBcontext.Categories.FirstOrDefaultAsync(c => c.Id == id);
+
             if (category == null)
             {
                 return NotFound();
@@ -145,6 +145,10 @@ namespace RecipeWebsiteMVC.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var category = await _dBcontext.Categories.FindAsync(id);
+            if(category == null)
+            {
+                return NotFound();
+            }   
             _dBcontext.Categories.Remove(category);
             await _dBcontext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

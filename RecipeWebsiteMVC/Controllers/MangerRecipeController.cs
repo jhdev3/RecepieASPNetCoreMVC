@@ -55,5 +55,72 @@ namespace RecipeWebsiteMVC.Controllers
             }
             return View(recipe);    
         }
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Recipe recipe = await _dBcontext.Recipes.FirstOrDefaultAsync(r => r.Id == id);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+            return View(recipe);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, Recipe recipe)
+        {
+            //Säkerhet för att inte manipulera Id och ändra på något annat
+            // Bör vara samma då det används för att komma till Edit sidan.
+            if(id != recipe.Id)
+            {
+                return BadRequest();
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(recipe);
+            }
+            ///Database things :)-> Kan behöva lägga det här i try block för att säkerställa ändring. med update och save
+            recipe.EditedAt = DateTime.Now;
+            _dBcontext.Update(recipe);
+            await _dBcontext.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        //Get Confirmation Page for Delete
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var recipe = await _dBcontext.Recipes
+                .FirstOrDefaultAsync(r => r.Id == id);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+
+            return View(recipe);
+        }
+
+        // POST: ManagerCategories/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken] //Prevent Cross site attacks 
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var recipe = await _dBcontext.Recipes.FindAsync(id);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+            _dBcontext.Recipes.Remove(recipe);
+            await _dBcontext.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
     }
 }
