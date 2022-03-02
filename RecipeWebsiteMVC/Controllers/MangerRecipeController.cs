@@ -42,6 +42,18 @@ namespace RecipeWebsiteMVC.Controllers
             await _dBcontext.SaveChangesAsync();
             return RedirectToAction("Index");   
         }
-
+        public async Task<IActionResult> Details(string id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            Recipe recipe = await _dBcontext.Recipes.FirstOrDefaultAsync(r => r.Id == id);
+            if(recipe == null)
+            {
+                return NotFound();
+            }
+            return View(recipe);    
+        }
     }
 }
