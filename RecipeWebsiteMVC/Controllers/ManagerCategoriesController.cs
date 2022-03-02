@@ -14,11 +14,11 @@ namespace RecipeWebsiteMVC.Controllers
     public class ManagerCategoriesController : Controller
     {
         //Viktigt då DbContexte inte är thread-safe
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _dBcontext;
 
         public ManagerCategoriesController(AppDbContext context)
         {
-            _context = context;
+            _dBcontext = context;
         }
 
         // GET: A list of all Categories and a way to mange them
@@ -26,7 +26,7 @@ namespace RecipeWebsiteMVC.Controllers
         {
             //Eftersom jag här använder Async för Iaction result och jag väntar på min databas att hämta hela DBSet / Tabellen
             //Används Async Metoderna är det super viktigt att programmet väntar in med Await :)
-            return View(await _context.Categories.ToListAsync());
+            return View(await _dBcontext.Categories.ToListAsync());
         }
 
         // GET: ManagerCategories/Details/
@@ -37,7 +37,7 @@ namespace RecipeWebsiteMVC.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
+            var category = await _dBcontext.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
@@ -62,8 +62,8 @@ namespace RecipeWebsiteMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
+                _dBcontext.Add(category);
+                await _dBcontext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -77,7 +77,7 @@ namespace RecipeWebsiteMVC.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _dBcontext.Categories.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
@@ -102,8 +102,8 @@ namespace RecipeWebsiteMVC.Controllers
                 try
                 {
                     category.EditedAt = DateTime.Now;
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
+                    _dBcontext.Update(category);
+                    await _dBcontext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -129,7 +129,7 @@ namespace RecipeWebsiteMVC.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
+            var category = await _dBcontext.Categories
                 .FirstOrDefaultAsync(c => c.Id == id);
             if (category == null)
             {
@@ -144,15 +144,15 @@ namespace RecipeWebsiteMVC.Controllers
         [ValidateAntiForgeryToken] //Prevent Cross site attacks 
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+            var category = await _dBcontext.Categories.FindAsync(id);
+            _dBcontext.Categories.Remove(category);
+            await _dBcontext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CategoryExists(string id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return _dBcontext.Categories.Any(e => e.Id == id);
         }
     }
 }
