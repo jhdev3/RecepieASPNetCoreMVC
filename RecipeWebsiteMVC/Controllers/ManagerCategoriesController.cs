@@ -28,25 +28,6 @@ namespace RecipeWebsiteMVC.Controllers
             //Används Async Metoderna är det super viktigt att programmet väntar in med Await :)
             return View(await _dBcontext.Categories.ToListAsync());
         }
-
-        // GET: ManagerCategories/Details/
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var category = await _dBcontext.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return View(category);
-        }
-
         // GET: ManagerCategories/Create View med formulär för create
         public IActionResult Create()
         {
