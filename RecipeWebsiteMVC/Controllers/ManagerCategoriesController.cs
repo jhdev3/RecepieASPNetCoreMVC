@@ -13,6 +13,7 @@ namespace RecipeWebsiteMVC.Controllers
 {
     public class ManagerCategoriesController : Controller
     {
+        //Viktigt då DbContexte inte är thread-safe
         private readonly AppDbContext _context;
 
         public ManagerCategoriesController(AppDbContext context)
@@ -21,8 +22,10 @@ namespace RecipeWebsiteMVC.Controllers
         }
 
         // GET: ManagerCategories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()//Skapar en ny tråd
         {
+            //Eftersom jag här använder Async för Iaction result och jag väntar på min databas att hämta hela DBSet / Tabellen
+            //Används Async Metoderna är det super viktigt att programmet väntar in med Await :)
             return View(await _context.Categories.ToListAsync());
         }
 
