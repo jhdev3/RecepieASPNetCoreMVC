@@ -16,7 +16,7 @@ namespace RecipeWebsiteMVC.Models
         public string? UnitType { get; set; }
         public string Name { get; set; }
 
-        public string RecipeId { get; set; }
+        public string? RecipeId { get; set; }
 
     }
 }

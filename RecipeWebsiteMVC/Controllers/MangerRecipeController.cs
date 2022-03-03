@@ -25,7 +25,7 @@ namespace RecipeWebsiteMVC.Controllers
             return View(recipies);
         }
         //Get - Create
-        public IActionResult Create(string id)
+        public IActionResult Create()
         {
             return View();  
         }
