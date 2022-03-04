@@ -124,12 +124,14 @@ namespace RecipeWebsiteMVC.Controllers
             var recipe =  _dBcontext.Recipes
                    .Where(r => r.Id == id)
                    .Include(i => i.Ingredients)
+                   .Include(d => d.Directions)
                    .FirstOrDefault();
             if (recipe == null)
             {
                 return NotFound();
             }
 
+            _dBcontext.Directions.RemoveRange(recipe.Directions);
             _dBcontext.Ingredients.RemoveRange(recipe.Ingredients);
             _dBcontext.Recipes.Remove(recipe);
             await _dBcontext.SaveChangesAsync();
