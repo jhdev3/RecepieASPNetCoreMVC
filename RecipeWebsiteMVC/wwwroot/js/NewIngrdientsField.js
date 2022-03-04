@@ -1,8 +1,9 @@
 let NewIngridientButton = document.getElementById("NewIngridient");
-let index = 1;
+let index = document.getElementById("IngridientCount").value;
 let wrapper = document.getElementById("input_fields_ingridients");
 
-console.log(wrapper);
+//console.log(inputValue);
+
 NewIngridientButton.addEventListener("click", function () {
   let newFields = document.createElement("div");
   newFields.setAttribute("class", "form-control");

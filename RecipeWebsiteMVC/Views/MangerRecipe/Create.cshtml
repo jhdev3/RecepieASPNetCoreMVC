@@ -1,16 +1,18 @@
 ﻿@model RecipeWebsiteMVC.Models.Recipe
-
 @{
     ViewData["Title"] = "Skapa Recept";
 }
 
-<h1>Skapa</h1>
+<input type="hidden" id="IngridientCount" value="@ViewBag.IngridientsCount"> 
+<input type="hidden" id="DirectionCount" value="@ViewBag.DirectionsCount">
 
+
+<h1>Skapa</h1>
 <h4>Recept</h4>
 <hr />
 <div asp-validation-summary="All"></div>
 <div class="row">
-    <form asp-action="Create">
+    <form asp-action="Create"> 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="container">
             <div class="row">
@@ -46,28 +48,38 @@
                 </div>
                 <div class="col-4">
 
-                    <div class="form-group">
-                        <input asp-for="Ingredients[0].Unit" class="form-control" placeholder="Antal" />
+                    
+                    @for (var i = 0; i < ViewBag.IngridientsCount; i++)
+                    {
+                     <div class="form-group">
+                        <input asp-for="Ingredients[i].Unit" class="form-control" placeholder="Antal" />
                         <span asp-validation-for="Ingredients[0].Unit" class="text-danger"></span>
 
-                        <input asp-for="Ingredients[0].UnitType" class="form-control" placeholder="Enhet" />
-                        <span asp-validation-for="Ingredients[0].UnitType" class="text-danger"></span>
+                        <input asp-for="Ingredients[i].UnitType" class="form-control" placeholder="Enhet" />
+                        <span asp-validation-for="Ingredients[i].UnitType" class="text-danger"></span>
 
-                        <input asp-for="Ingredients[0].Name" class="form-control" placeholder="Namn på ingridiens" />
-                        <span asp-validation-for="Ingredients[0].Name" class="text-danger"></span>
+                        <input asp-for="Ingredients[i].Name" class="form-control" placeholder="Namn på ingridiens" />
+                        <span asp-validation-for="Ingredients[i].Name" class="text-danger"></span>
                     </div>
+                    }
+                        
+
+                    
                     <div id="input_fields_ingridients"> </div>
-                    <div>
+                   
                         <input type="button"
                                value="Lägg till ingridiens"
                                class="btn btn-primary"
                                id="NewIngridient" />
-                    </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <input asp-for="Directions[0].Text" class="form-control" placeholder="Instruktion" />
-                        <span asp-validation-for="Directions[0].Text" class="text-danger"></span>
+                    @for (var i = 0; i < ViewBag.DirectionsCount; i++)
+                    {
+                        <input asp-for="Directions[i].Text" class="form-control" placeholder="Instruktion" />
+                        <span asp-validation-for="Directions[i].Text" class="text-danger"></span>
+                    }
+                        
                     </div>
                     <div id="NewFieldOutPut"></div>
                     <input type="button" id="NewDirection" value="Lägg till instruktion" class="btn btn-primary" />

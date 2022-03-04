@@ -27,6 +27,8 @@ namespace RecipeWebsiteMVC.Controllers
         //Get - Create
         public IActionResult Create()
         {
+            ViewBag.IngridientsCount = 1;
+            ViewBag.DirectionsCount = 1;
             return View();  
         }
         [HttpPost]  
@@ -41,6 +43,9 @@ namespace RecipeWebsiteMVC.Controllers
 
             if (!ModelState.IsValid)
             {
+                ViewBag.IngridientsCount = recipe.Ingredients.Count;
+                ViewBag.DirectionsCount = recipe.Directions.Count;
+
                 return View(recipe);  
             }
             ///Database things :)

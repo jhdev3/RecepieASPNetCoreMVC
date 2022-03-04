@@ -1,8 +1,8 @@
 let NewDirectionButton = document.getElementById("NewDirection");
-let indexDirection = 1;
+let indexDirection = document.getElementById("DirectionCount").value;
+
 let wrapperOut = document.getElementById("NewFieldOutPut");
 
-console.log(wrapper);
 NewDirectionButton.addEventListener("click", function () {
   let newFields = document.createElement("div");
   newFields.setAttribute("class", "form-control");
