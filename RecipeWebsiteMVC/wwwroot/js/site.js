@@ -26,7 +26,7 @@ function RemoveFields(element) {
 function CreateInputUnit(i) {
   let inputField = document.createElement("input");
   inputField.setAttribute("type", "number");
-  inputField.setAttribute("name", `ingredients[${i}].Unit`);
+  inputField.setAttribute("name", `Ingredients[${i}].Unit`);
   inputField.setAttribute("class", "form-control");
   inputField.setAttribute("placeholder", "Antal");
 
@@ -36,7 +36,7 @@ function CreateInputUnit(i) {
 function CreateInputUnitType(i) {
   let inputField = document.createElement("input");
   inputField.setAttribute("type", "text");
-  inputField.setAttribute("name", `ingredients[${i}].UnitType`);
+  inputField.setAttribute("name", `Ingredients[${i}].UnitType`);
   inputField.setAttribute("class", "form-control");
   inputField.setAttribute("placeholder", "Enhet");
 
@@ -45,7 +45,7 @@ function CreateInputUnitType(i) {
 function CreateInputName(i) {
   let inputField = document.createElement("input");
   inputField.setAttribute("type", "text");
-  inputField.setAttribute("name", `ingredients[${i}].Name`);
+  inputField.setAttribute("name", `Ingredients[${i}].Name`);
   inputField.setAttribute("class", "form-control");
   inputField.setAttribute("placeholder", "Namn");
   return inputField;

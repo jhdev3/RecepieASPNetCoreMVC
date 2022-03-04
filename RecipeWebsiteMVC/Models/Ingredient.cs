@@ -16,7 +16,8 @@ namespace RecipeWebsiteMVC.Models
         public string? UnitType { get; set; }
         public string Name { get; set; }
 
-        public string? RecipeId { get; set; }
+        [ForeignKey("Recipe")]//Används i Databasen för att skapa relation etc ;)
+        public virtual string? RecipeId { get; set; }
 
     }
 }

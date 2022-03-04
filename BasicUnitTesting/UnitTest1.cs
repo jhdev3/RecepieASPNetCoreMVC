@@ -21,28 +21,7 @@ namespace BasicUnitTesting
 
         public UnitTest1()
         {
-            var recipe = new Recipe();
-            recipe.Id = "testId";
-            var ingredient = new Ingredient { Unit = 2, UnitType = "st", Name = "Tester i ett", RecipeId = recipe.Id };
-            var directive = new Direction { Text = "Börja med att skriva ett test Case", RecipeId = recipe.Id };
-            var ingredient2 = new Ingredient { Unit = 3, UnitType = "st", Name = "Tester", RecipeId = recipe.Id };
-            var directive2 = new Direction { Text = "Testa dit Test Case LOL", RecipeId = recipe.Id };
-
-
-            //Act
-            recipe.Title = "Test";
-            recipe.Description = "Testar recipe";
-            recipe.Category = "Vegan";
-            recipe.Directions.Add(directive);
-            recipe.Ingredients.Add(ingredient);
-            recipe.Directions.Add(directive2);
-            recipe.Ingredients.Add(ingredient2);
-
-            fakeRecipeDb.Add(recipe);
-
-            fakeDirectionDb.AddRange(recipe.Directions);
-
-            fakeIngridientDb.AddRange(recipe.Ingredients);
+  
         }
       
 
@@ -52,8 +31,8 @@ namespace BasicUnitTesting
         {
             //Arrange
             var recipe = new Recipe();
-            var ingredient = new Ingredient { Unit = 2, UnitType = "st", Name = "Tester i ett", RecipeId = recipe.Id };
-            var directive = new Direction { Text = "Test2", RecipeId = recipe.Id };
+            var ingredient = new Ingredient { Unit = 2, UnitType = "st", Name = "Tester i ett"};
+            var directive = new Direction { Text = "Test2"};
 
 
             //Act
@@ -72,29 +51,6 @@ namespace BasicUnitTesting
             Assert.NotNull(recipe.DateOfCreation.ToString());
             Assert.Contains(ingredient, recipe.Ingredients);
             Assert.Equal("Test2", recipe.Directions[0].Text);
-        }
-
-        [Fact]
-        public void TestRetriveFromDB()
-        {
-            //Arrange
-            var recipe = fakeRecipeDb.Find(i => i.Id == "testId");
-            recipe.Directions = fakeDirectionDb.FindAll(fkey => fkey.RecipeId == "testId").ToList();
-
-            recipe.Ingredients = fakeIngridientDb.FindAll(fkey => fkey.RecipeId == "testId").ToList();
-            //Act
-
-            int icount = recipe.Ingredients.Count();
-            recipe.Title = "Test Retrive From Db";
-            int dcount = recipe.Directions.Count();
-            recipe.EditedAt = System.DateTime.Now;
-
-            //Assert
-
-            Assert.NotEqual(recipe.Title, "Test");
-            Assert.NotNull(recipe.EditedAt);
-            Assert.Equal(2, icount);    
-            Assert.Equal(2, dcount);    
         }
 
     }
