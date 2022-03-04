@@ -25,7 +25,7 @@ namespace RecipeWebsiteMVC.Controllers
             return View(recipies);
         }
         //Get - Create
-        public IActionResult Create(string id)
+        public IActionResult Create()
         {
             return View();  
         }
@@ -33,13 +33,21 @@ namespace RecipeWebsiteMVC.Controllers
         [ValidateAntiForgeryToken]  
         public async Task<IActionResult> Create(Recipe recipe)
         {
+            //Lägg till databas relation med recept och ingridiens;) 
+            //foreach(var i in recipe.Ingredients)
+            //{
+            //    i.RecipeId = recipe.Id; 
+            //}
+
             if (!ModelState.IsValid)
             {
                 return View(recipe);  
             }
             ///Database things :)
-            _dBcontext.Add(recipe);
-            await _dBcontext.SaveChangesAsync();
+            _dBcontext.Add(recipe); 
+            //_dBcontext.Ingredients.AddRange(recipe.Ingredients);
+
+            await _dBcontext.SaveChangesAsync();//UnitOfWork :)
             return RedirectToAction("Index");   
         }
         public async Task<IActionResult> Details(string id)
@@ -113,11 +121,18 @@ namespace RecipeWebsiteMVC.Controllers
         [ValidateAntiForgeryToken] //Prevent Cross site attacks 
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var recipe = await _dBcontext.Recipes.FindAsync(id);
+            var recipe =  _dBcontext.Recipes
+                   .Where(r => r.Id == id)
+                   .Include(i => i.Ingredients)
+                   .Include(d => d.Directions)
+                   .FirstOrDefault();
             if (recipe == null)
             {
                 return NotFound();
             }
+
+            _dBcontext.Directions.RemoveRange(recipe.Directions);
+            _dBcontext.Ingredients.RemoveRange(recipe.Ingredients);
             _dBcontext.Recipes.Remove(recipe);
             await _dBcontext.SaveChangesAsync();
             return RedirectToAction("Index");

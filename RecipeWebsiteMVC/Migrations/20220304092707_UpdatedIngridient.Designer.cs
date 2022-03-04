@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeWebsiteMVC.Data;
 
@@ -11,9 +12,10 @@ using RecipeWebsiteMVC.Data;
 namespace RecipeWebsiteMVC.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220304092707_UpdatedIngridient")]
+    partial class UpdatedIngridient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,6 +53,7 @@ namespace RecipeWebsiteMVC.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RecipeId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Text")
@@ -131,16 +134,16 @@ namespace RecipeWebsiteMVC.Migrations
                 {
                     b.HasOne("RecipeWebsiteMVC.Models.Recipe", null)
                         .WithMany("Directions")
-                        .HasForeignKey("RecipeId");
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("RecipeWebsiteMVC.Models.Ingredient", b =>
                 {
-                    b.HasOne("RecipeWebsiteMVC.Models.Recipe", "Recipe")
+                    b.HasOne("RecipeWebsiteMVC.Models.Recipe", null)
                         .WithMany("Ingredients")
                         .HasForeignKey("RecipeId");
-
-                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("RecipeWebsiteMVC.Models.Recipe", b =>

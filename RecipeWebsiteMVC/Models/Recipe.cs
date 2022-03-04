@@ -11,25 +11,15 @@
         public string Image { get; set; }
         public int Portions { get; set; }
 
-        public IList<Direction>? Directions { get; set; }         
-        public IList<Ingredient>? Ingredients { get; set; }
+        public IList<Direction> Directions { get; set; }         
+        public IList<Ingredient> Ingredients { get; set; }
 
+        public DateTime? EditedAt { get; set; }
 
-        ///// <summary>
-        ///// Add direction to the list  
-        ///// </summary>
-        ///// <param name="d">Direction</param>
-        //public void AddDirection(Direction d)
-        //{
-        //    Directions.Add(d);  
-        //}
-        ///// <summary>
-        ///// Add an ingrident
-        ///// </summary>
-        ///// <param name="i">Ingredient</param>
-        //public void AddIngredient(Ingredient i)
-        //{
-        //    Ingredients.Add(i); 
-        //}
+        public Recipe()
+        {
+            Directions = new List<Direction>(); 
+            Ingredients = new List<Ingredient>();   
+        }
     }
 }

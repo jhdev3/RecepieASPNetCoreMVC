@@ -18,18 +18,38 @@ namespace RecipeWebsiteMVC.Data
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Direction> Directions { get; set; }
         public DbSet<Category> Categories { get; set; }
-        
+
+
+      
 
         //Adding CascadeDelete On Ingridient And Direction
         //Cascade Delete Can be Auto now in later version othwerwise i need to configure this below:
-        //
-        //protected override void onmodelcreating(modelbuilder modelbuilder)
-        //{
-        //    modelbuilder.entity<recipe>()
+        // modelbuilder.entity<recipe>()
         //        .hasmany<ingredient>(r => r.ingredients)
         //        .hasforeignkey(i => i.recipeid)
         //        .ondelete(deletebehavior.cascade);
-        //}
+        /*
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Recipe>()
+                .HasMany<Ingredient>(g => g.Ingredients)
+                .HasForeignKey("RecipeId")
+                 .WillCascadeOnDelete(true);
 
+
+            modelBuilder.Entity<Ingredient>()
+               .HasOptional(o => o.Recipes)
+               .WithMany(m => m.Recipes)
+               .HasForeignKey(k => k.RecipeId)
+               .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity("RecipeWebsiteMVC.Models.Ingredient", b =>
+                {
+                    b.HasOne("RecipeWebsiteMVC.Models.Recipe", null)
+                        .WithMany("Ingredients")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+        }*/
     }
 }
