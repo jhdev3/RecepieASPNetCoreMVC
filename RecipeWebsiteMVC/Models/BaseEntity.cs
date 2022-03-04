@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeWebsiteMVC.Models
 {
@@ -12,7 +13,8 @@ namespace RecipeWebsiteMVC.Models
 
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string? Id { get; set; }
         public DateTime DateOfCreation { get; set; } = DateTime.Now;
 
 
