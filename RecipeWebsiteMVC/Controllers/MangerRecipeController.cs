@@ -100,7 +100,7 @@ namespace RecipeWebsiteMVC.Controllers
         public async Task<IActionResult> Edit(string id, Recipe recipe)
         {
             //Säkerhet för att inte manipulera Id och ändra på något annat
-            // Bör vara samma då det används för att komma till Edit sidan.
+            //Bör vara samma då det används för att komma till Edit sidan.
             if(id != recipe.Id)
             {
                 return BadRequest();
@@ -113,6 +113,7 @@ namespace RecipeWebsiteMVC.Controllers
                 return View("Create", recipe);
             }
             ///Database things :)-> Kan behöva lägga det här i try block för att säkerställa ändring. med update och save
+            ///Här skulle 2 kunna ändra samtidigt och då få allt att Krasha. 
             recipe.EditedAt = DateTime.Now;
 
             _dBcontext.Update(recipe);
@@ -139,16 +140,16 @@ namespace RecipeWebsiteMVC.Controllers
             return View(recipe);
         }
 
-        // POST: ManagerCategories/Delete/5
+        // POST: ManagerCategories/Delete/
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken] //Prevent Cross site attacks 
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var recipe =  _dBcontext.Recipes
+            var recipe =  await _dBcontext.Recipes
                    .Where(r => r.Id == id)
                    .Include(i => i.Ingredients)
                    .Include(d => d.Directions)
-                   .FirstOrDefault();
+                   .FirstOrDefaultAsync();
             if (recipe == null)
             {
                 return NotFound();
