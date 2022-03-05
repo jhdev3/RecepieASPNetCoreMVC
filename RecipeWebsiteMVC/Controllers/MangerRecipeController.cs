@@ -60,8 +60,12 @@ namespace RecipeWebsiteMVC.Controllers
             {
                 return NotFound();
             }
-            Recipe recipe = await _dBcontext.Recipes.FirstOrDefaultAsync(r => r.Id == id);
-            if(recipe == null)
+            var recipe = await _dBcontext.Recipes
+              .Where(r => r.Id == id)
+              .Include(i => i.Ingredients)
+              .Include(d => d.Directions)
+              .FirstOrDefaultAsync();
+            if (recipe == null)
             {
                 return NotFound();
             }
@@ -131,7 +135,11 @@ namespace RecipeWebsiteMVC.Controllers
             }
 
             var recipe = await _dBcontext.Recipes
-                .FirstOrDefaultAsync(r => r.Id == id);
+              .Where(r => r.Id == id)
+              .Include(i => i.Ingredients)
+              .Include(d => d.Directions)
+              .FirstOrDefaultAsync();
+
             if (recipe == null)
             {
                 return NotFound();
