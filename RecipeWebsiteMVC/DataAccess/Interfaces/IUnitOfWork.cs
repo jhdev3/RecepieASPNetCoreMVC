@@ -7,6 +7,7 @@
     public interface IUnitOfWork
     {
         ICategoryRepo Category { get; }
+        IRecipeRepository Recipe { get; }
 
         public Task SaveAsync();
         public void Save();

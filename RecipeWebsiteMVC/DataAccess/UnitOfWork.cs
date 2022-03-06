@@ -8,11 +8,13 @@ namespace RecipeWebsiteMVC.DataAccess
         private AppDbContext _db;
         public ICategoryRepo Category { get; private set; }
 
+        public IRecipeRepository Recipe { get; private set; }
 
         public UnitOfWork(AppDbContext db) 
         {
             _db = db;
             Category = new CategoryRepository(_db);
+            Recipe = new RecipeRepository(_db); 
         }
 
         public void Save()
