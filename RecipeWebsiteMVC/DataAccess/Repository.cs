@@ -2,26 +2,27 @@
 using RecipeWebsiteMVC.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-
-
+using RecipeWebsiteMVC.Data;
 
 namespace RecipeWebsiteMVC.DataAccess
 {
     /// <summary>
     /// Creating a Generic Repo that uses the patterns from the Interface
-    /// For Simple Comands :)
+    /// For Simple CRUD operations :)
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Repository<T> : IRepository<T> where T : BaseEntity
+    public class Repository<T> : IRepositoryAsync<T> where T : class
     {
-        private readonly DbContext _db;
+        private readonly AppDbContext _db;
         internal DbSet<T> dbSet;
 
-        public Repository(DbContext db)
+        public Repository(AppDbContext db)
         {
             _db = db;
             this.dbSet = _db.Set<T>();
         }
+
+
         public void Add(T entity)
         {
             dbSet.Add(entity);
@@ -32,19 +33,21 @@ namespace RecipeWebsiteMVC.DataAccess
             dbSet.AddRange(entities);   
         }
 
-        public T Get(string id)
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return dbSet.Find(id);
+            return await dbSet.ToListAsync();
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<T> GetAsync(string id)
         {
-            return dbSet.ToList();
+            return await dbSet.FindAsync(id);
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> predicate)
+        public async Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
-               return dbSet.FirstOrDefault(predicate);  
+            IQueryable<T> query = dbSet;
+            query = query.Where(predicate);
+            return await query.FirstOrDefaultAsync();
         }
 
         public void Remove(T entity)

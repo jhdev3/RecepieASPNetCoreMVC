@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecipeWebsiteMVC.Data;
+using RecipeWebsiteMVC.DataAccess.Interfaces;
 using RecipeWebsiteMVC.Models;
 
 namespace RecipeWebsiteMVC.Controllers
 {
     public class MangerRecipeController : Controller
     {
-        private readonly AppDbContext _dBcontext;
+        private readonly IUnitOfWork _UnitOfWork;
 
-        public MangerRecipeController(AppDbContext context)
+        public MangerRecipeController(IUnitOfWork context)
         {
-            _dBcontext = context;
+            _UnitOfWork = context;
         }
         //MVC 4: Men intressant hur man kan använda sig av Performing Multiple Operations in Parallel
 
@@ -21,7 +22,7 @@ namespace RecipeWebsiteMVC.Controllers
         //Get Request
         public async Task<IActionResult> Index()
         {
-            var recipies = await _dBcontext.Recipes.ToListAsync();
+            var recipies = await _UnitOfWork.Recipe.GetAllAsync();
             return View(recipies);
         }
         //Get - Create
@@ -48,10 +49,9 @@ namespace RecipeWebsiteMVC.Controllers
                 return View(recipe);  
             }
             ///Database things :)
-            _dBcontext.Recipes.Add(recipe); 
-            //_dBcontext.Ingredients.AddRange(recipe.Ingredients);
+            _UnitOfWork.Recipe.Add(recipe); 
 
-            await _dBcontext.SaveChangesAsync();//UnitOfWork :)
+            await _UnitOfWork.SaveAsync();//UnitOfWork :)
             return RedirectToAction("Index");   
         }
         public async Task<IActionResult> Details(string id)
@@ -60,11 +60,8 @@ namespace RecipeWebsiteMVC.Controllers
             {
                 return NotFound();
             }
-            var recipe = await _dBcontext.Recipes
-              .Where(r => r.Id == id)
-              .Include(i => i.Ingredients)
-              .Include(d => d.Directions)
-              .FirstOrDefaultAsync();
+            var recipe = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id);
+             
             if (recipe == null)
             {
                 return NotFound();
@@ -77,11 +74,8 @@ namespace RecipeWebsiteMVC.Controllers
             {
                 return NotFound();
             }
-            var recipe = await _dBcontext.Recipes
-                 .Where(r => r.Id == id)
-                 .Include(i => i.Ingredients)
-                 .Include(d => d.Directions)
-                 .FirstOrDefaultAsync();
+           
+            var recipe = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id);
 
             if (recipe == null)
             {
@@ -116,13 +110,11 @@ namespace RecipeWebsiteMVC.Controllers
                 ViewBag.CreateEdit = "Edit";
                 return View("Create", recipe);
             }
-            ///Database things :)-> Kan behöva lägga det här i try block för att säkerställa ändring. med update och save
-            ///Här skulle 2 kunna ändra samtidigt och då få allt att Krasha. 
-            recipe.EditedAt = DateTime.Now;
-
-            _dBcontext.Update(recipe);
            
-            await _dBcontext.SaveChangesAsync();
+
+            _UnitOfWork.Recipe.Update(recipe);
+           
+            await _UnitOfWork.SaveAsync();
             return RedirectToAction("Index");
         }
 
@@ -134,11 +126,8 @@ namespace RecipeWebsiteMVC.Controllers
                 return NotFound();
             }
 
-            var recipe = await _dBcontext.Recipes
-              .Where(r => r.Id == id)
-              .Include(i => i.Ingredients)
-              .Include(d => d.Directions)
-              .FirstOrDefaultAsync();
+            var recipe = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id);
+
 
             if (recipe == null)
             {
@@ -153,20 +142,18 @@ namespace RecipeWebsiteMVC.Controllers
         [ValidateAntiForgeryToken] //Prevent Cross site attacks 
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var recipe =  await _dBcontext.Recipes
-                   .Where(r => r.Id == id)
-                   .Include(i => i.Ingredients)
-                   .Include(d => d.Directions)
-                   .FirstOrDefaultAsync();
+                      var recipe = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id);
+
             if (recipe == null)
             {
                 return NotFound();
             }
 
-            _dBcontext.Directions.RemoveRange(recipe.Directions);
-            _dBcontext.Ingredients.RemoveRange(recipe.Ingredients);
-            _dBcontext.Recipes.Remove(recipe);
-            await _dBcontext.SaveChangesAsync();
+            //_dBcontext.Directions.RemoveRange(recipe.Directions);
+            //_dBcontext.Ingredients.RemoveRange(recipe.Ingredients);
+            //_dBcontext.Recipes.Remove(recipe);
+            _UnitOfWork.Recipe.DeleteCascade(recipe);
+            await _UnitOfWork.SaveAsync();
             return RedirectToAction("Index");
         }
     }

@@ -7,16 +7,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RecipeWebsiteMVC.Data;
+using RecipeWebsiteMVC.DataAccess.Interfaces;
 using RecipeWebsiteMVC.Models;
 
 namespace RecipeWebsiteMVC.Controllers
 {
     public class ManagerCategoriesController : Controller
     {
-        //Viktigt då DbContexte inte är thread-safe
-        private readonly AppDbContext _dBcontext;
+        //Viktigt med private och readonly Readonly då DbContext inte är thread-safe, IE trådar har tillgång till appens "Data"  
+        private readonly IUnitOfWork _dBcontext;
 
-        public ManagerCategoriesController(AppDbContext context)
+        public ManagerCategoriesController(IUnitOfWork context)
         {
             _dBcontext = context;
         }
@@ -26,7 +27,7 @@ namespace RecipeWebsiteMVC.Controllers
         {
             //Eftersom jag här använder Async för Iaction result och jag väntar på min databas att hämta hela DBSet / Tabellen
             //Används Async Metoderna är det super viktigt att programmet väntar in med Await :)
-            return View(await _dBcontext.Categories.ToListAsync());
+            return View(await _dBcontext.Category.GetAllAsync());
         }
         // GET: ManagerCategories/Create View med formulär för create
         public IActionResult Create()
@@ -43,8 +44,8 @@ namespace RecipeWebsiteMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                _dBcontext.Add(category);
-                await _dBcontext.SaveChangesAsync();
+                _dBcontext.Category.Add(category);
+                await _dBcontext.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -58,7 +59,7 @@ namespace RecipeWebsiteMVC.Controllers
                 return NotFound();
             }
 
-            var category = await _dBcontext.Categories.FindAsync(id);
+            var category = await _dBcontext.Category.GetAsync(id);
             if (category == null)
             {
                 return NotFound();
@@ -83,19 +84,14 @@ namespace RecipeWebsiteMVC.Controllers
                 try
                 {
                     category.EditedAt = DateTime.Now;
-                    _dBcontext.Update(category);
-                    await _dBcontext.SaveChangesAsync();
+                    _dBcontext.Category.Update(category);
+                    await _dBcontext.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
-                    {
+                   
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                  
                 }
                 return RedirectToAction("Index");
             }
@@ -110,7 +106,7 @@ namespace RecipeWebsiteMVC.Controllers
                 return NotFound();
             }
 
-            var category = await _dBcontext.Categories.FirstOrDefaultAsync(c => c.Id == id);
+            var category = await _dBcontext.Category.GetFirstOrDefaultAsync(c => c.Id == id);
 
             if (category == null)
             {
@@ -125,19 +121,16 @@ namespace RecipeWebsiteMVC.Controllers
         [ValidateAntiForgeryToken] //Prevent Cross site attacks 
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var category = await _dBcontext.Categories.FindAsync(id);
+            var category = await _dBcontext.Category.GetAsync(id);
             if(category == null)
             {
                 return NotFound();
             }   
-            _dBcontext.Categories.Remove(category);
-            await _dBcontext.SaveChangesAsync();
+            _dBcontext.Category.Remove(category);
+            await _dBcontext.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(string id)
-        {
-            return _dBcontext.Categories.Any(e => e.Id == id);
-        }
+   
     }
 }
