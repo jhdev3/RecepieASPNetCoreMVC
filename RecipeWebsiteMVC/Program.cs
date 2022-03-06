@@ -1,5 +1,7 @@
 using RecipeWebsiteMVC.Data;
 using Microsoft.EntityFrameworkCore;
+using RecipeWebsiteMVC.DataAccess.Interfaces;
+using RecipeWebsiteMVC.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
         ));
+//Register ICategory :)
+//Ett request blir recived blir Scoped för det objekt. Bör vara försiktigt med trancient som skapar för varje tryck 
+//krävs bara 1 Inejection här men måste uppdatera IunitOfWork/UnitOfWork för varje tabell man vill använda där ;)
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
