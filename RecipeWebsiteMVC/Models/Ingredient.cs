@@ -5,6 +5,7 @@ namespace RecipeWebsiteMVC.Models
 {
     /// <summary>
     /// If you want to Create a "Header field when creating your recipe skip Unit and UnitType"
+    /// Make sure to not use Lazy Loading in db. 
     /// </summary>
    
     //Skulle kunna vara en sträng och använda ett Regexp uttryck för att validera och se till att det är acceptabelt format för att uppdatera portioner etc.
@@ -14,9 +15,10 @@ namespace RecipeWebsiteMVC.Models
     {
         public double? Unit { get; set; }
         public string? UnitType { get; set; }
+        [Required]
         public string Name { get; set; }
 
-        [ForeignKey("Recipe")]//Används i Databasen för att skapa relation etc ;)
+        [ForeignKey("Recipe")]//Används i Databasen för att skapa relation etc ;) 
         public virtual string? RecipeId { get; set; }
 
     }

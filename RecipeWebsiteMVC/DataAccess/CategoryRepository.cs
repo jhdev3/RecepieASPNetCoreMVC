@@ -6,7 +6,7 @@ namespace RecipeWebsiteMVC.DataAccess
 {
     public class CategoryRepository : Repository<Category>, ICategoryRepo
     {
-        private AppDbContext _db;
+        private readonly AppDbContext _db;
 
         public CategoryRepository(AppDbContext db) : base(db)
         {
@@ -15,6 +15,7 @@ namespace RecipeWebsiteMVC.DataAccess
 
         public void Update(Category obj)
         {
+            //Enkelt error här Concurrency behöver fixas ;)
             _db.Update(obj);
         }
     }

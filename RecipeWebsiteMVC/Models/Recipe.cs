@@ -7,10 +7,14 @@
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Category { get; set; } //En sträng och inte ett Category objekt => sortera på kategori görs med query/funktion, men ett recept skulle kunna ingå i flera kategorier, därav antingen göra det till lista eller använda någon typ av tagar #Kyckling#Wok. Samt jag kan välja om jag sparar Id till kategorin eller namnet spelar inte någon jätteroll gissar jag på då tabellen inte blir superstor.  
+        public string Category { get; set; } //En sträng och inte ett Category objekt här vill jag inte skapa någon relation på så sätt att de skapas extra tabeller i databasen. Tanken här är att hämta det som matchar kategrion i den columnen i tabellen.
         public string Image { get; set; }
         public int Portions { get; set; }
 
+
+        //Göra dessa till virtual skulle kunna öppna för lazy loading. Skapar n+1 extra queries.
+        //Vilket vi inte vill ha för en web app. Försöka undvik virtual här
+        //Kan också sätt lazyloading till false för AppDbContext
         public IList<Direction> Directions { get; set; }         
         public IList<Ingredient> Ingredients { get; set; }
 
