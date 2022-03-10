@@ -37,12 +37,20 @@ namespace RecipeWebsiteMVC.DataAccess
         {
             return await dbSet.ToListAsync();
         }
-
+        /// <summary>
+        /// Possible null reference return
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<T> GetAsync(string id)
         {
             return await dbSet.FindAsync(id);
         }
-
+        /// <summary>
+        /// Possible null reference return
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public async Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
             IQueryable<T> query = dbSet;

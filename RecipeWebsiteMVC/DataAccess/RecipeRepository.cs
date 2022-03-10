@@ -11,7 +11,7 @@ namespace RecipeWebsiteMVC.DataAccess
 {
     public class RecipeRepository : Repository<Recipe>, IRecipeRepository
     {
-        private AppDbContext _db;
+        private readonly AppDbContext _db;
 
         public RecipeRepository(AppDbContext db) : base(db)
         {
@@ -26,12 +26,14 @@ namespace RecipeWebsiteMVC.DataAccess
         }
         /// <summary>
         /// Get The full recipe including all the ingridients and directions
+        /// Use only when you want everything that recipe :)
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Recipe Can include null values</returns>
         public async Task<Recipe> GetDirectionsAndIngredients(string id)
         {
-            Recipe recipe = await _db.Recipes
+            //Skapar Eager Loading med Include:)
+            Recipe? recipe = await _db.Recipes
               .Where(r => r.Id == id)
               .Include(i => i.Ingredients)
               .Include(d => d.Directions)
@@ -44,12 +46,16 @@ namespace RecipeWebsiteMVC.DataAccess
         /// <summary>
         /// Updating the full recipe 
         /// Only updates image when a new one is uploaded 
+        //  Benefit should not render any occurency error 
+        //  Really low chanse of doing it atleast
         /// </summary>
-        /// <param name="obj">Recipe</param>
+        /// <param name="obj"></param>
+        /// <exception cref="Exception">ConcurrencyException </exception>
         public void Update(Recipe obj)
         {
             //Restrict Updating RecipeFromDb entity frameWork will keep track of this
             //Vill i princip updatera allt utom Image som bara görs när man laddar upp en ny.
+            
             var RecipeFromDb = _db.Recipes.FirstOrDefault(r => r.Id == obj.Id);
             if (RecipeFromDb != null)
             {
@@ -64,8 +70,11 @@ namespace RecipeWebsiteMVC.DataAccess
                 if(obj.Image != null)
                 {
                     RecipeFromDb.Image = obj.Image; 
-                }
-                
+                }     
+            }
+            else
+            {
+                throw new Exception("ConcurrencyException: " + obj.Title + "Kunde inte uppdateras");
             }
         }
 

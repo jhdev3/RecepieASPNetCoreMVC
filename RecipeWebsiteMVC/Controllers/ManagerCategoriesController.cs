@@ -17,18 +17,22 @@ namespace RecipeWebsiteMVC.Controllers
         //Viktigt med private och readonly Readonly då DbContext inte är thread-safe, IE trådar har tillgång till appens "Data"  
         private readonly IUnitOfWork _dBcontext;
 
+
         public ManagerCategoriesController(IUnitOfWork context)
         {
             _dBcontext = context;
         }
+
 
         // GET: A list of all Categories and a way to mange them
         public async Task<IActionResult> Index()//krävs en Async metod för att kunna använda await vilket är viktigt/ ett måste om man använder sig av Aync metoder  
         {
             //Eftersom jag här använder Async för Iaction result och jag väntar på min databas att hämta hela DBSet / Tabellen
             //Används Async Metoderna är det super viktigt att programmet väntar in med Await :)
-            return View(await _dBcontext.Category.GetAllAsync());
+            var Categories = await _dBcontext.Category.GetAllAsync();
+            return View(Categories);
         }
+
         // GET: ManagerCategories/Create View med formulär för create
         public IActionResult Create()
         {
@@ -56,19 +60,21 @@ namespace RecipeWebsiteMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return NotFound(id);
             }
 
             var category = await _dBcontext.Category.GetAsync(id);
+           
             if (category == null)
             {
-                return NotFound();
+                return NotFound(id);
             }
+
             return View(category);
         }
 
         // POST: ManagerCategories/Edit/
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, Category category)
@@ -76,61 +82,52 @@ namespace RecipeWebsiteMVC.Controllers
             //En extra säkerhet att inte bli manipulerad eller att Id har ändrats 
             if (id != category.Id)
             {
-                return NotFound(); //StatusKod 404 response tillbaka
+                return NotFound(id); //StatusKod 404 response tillbaka
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    category.EditedAt = DateTime.Now;
-                    _dBcontext.Category.Update(category);
-                    await _dBcontext.SaveAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                   
-                        return NotFound();
-                  
-                }
+                category.EditedAt = DateTime.Now;
+                _dBcontext.Category.Update(category);
+                await _dBcontext.SaveAsync();
                 return RedirectToAction("Index");
             }
             return View(category);
         }
 
-        // GET: ManagerCategories/Delete/5
+        // GET: ManagerCategories/Delete/Confirmation page 
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                return NotFound(id);
             }
 
-            var category = await _dBcontext.Category.GetFirstOrDefaultAsync(c => c.Id == id);
+            var category = await _dBcontext.Category.GetFirstOrDefaultAsync(c => c.Id == id); 
 
             if (category == null)
             {
-                return NotFound();
+                return NotFound(id);
             }
 
             return View(category);
         }
 
-        // POST: ManagerCategories/Delete/5
+        // POST: ManagerCategories/Delete/
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken] //Prevent Cross site attacks 
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var category = await _dBcontext.Category.GetAsync(id);
-            if(category == null)
+            if (category == null)
             {
-                return NotFound();
-            }   
+                return NotFound(id);
+            }
             _dBcontext.Category.Remove(category);
             await _dBcontext.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
-   
+
     }
 }
