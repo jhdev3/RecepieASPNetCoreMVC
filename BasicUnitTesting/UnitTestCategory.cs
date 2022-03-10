@@ -171,10 +171,10 @@ namespace BasicUnitTesting
         {
             //Arrange
             string id = "123";
-            Category category = new Category { Id = "123", Name = "TestGet" };
+            Category category = new Category { Id = "123", Name = null };
 
             ManagerCategoriesController Mcc = new ManagerCategoriesController(UnitiOfWork.Object);
-            Mcc.ModelState.AddModelError("Name", "Required");
+            Mcc.ModelState.AddModelError("Name", "Required");//Injecting model error so will always be true;)
             //Act
             var result = Mcc.Edit(id, category).Result; 
 
