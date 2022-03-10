@@ -41,7 +41,7 @@ namespace RecipeWebsiteMVC.Controllers
 
             if (!ModelState.IsValid)
             {   
-                //If Statement in View ;)
+                // in View stuff ;)
                 ViewBag.IngridientsCount = recipe.Ingredients.Count;
                 ViewBag.DirectionsCount = recipe.Directions.Count;
                 //Typ av View istället för att copy pasta och hålla på att trixa med 2 views som i princip är Lika
@@ -58,13 +58,13 @@ namespace RecipeWebsiteMVC.Controllers
         {
             if(id == null)
             {
-                return NotFound();
+                return NotFound(id);
             }
             var recipe = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id);
              
             if (recipe == null)
             {
-                return NotFound();
+                return NotFound(id);
             }
             return View(recipe);    
         }
@@ -72,20 +72,16 @@ namespace RecipeWebsiteMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return NotFound(id);
             }
            
             var recipe = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id);
 
             if (recipe == null)
             {
-                return NotFound();
+                return NotFound(id);
             }
            
-            if (recipe == null)
-            {
-                return NotFound();
-            }
             ViewBag.IngridientsCount = recipe.Ingredients.Count;
             ViewBag.DirectionsCount = recipe.Directions.Count;
             ViewBag.CreateEdit = "Edit";//Typ av View
@@ -101,7 +97,7 @@ namespace RecipeWebsiteMVC.Controllers
             //Bör vara samma då det används för att komma till Edit sidan.
             if(id != recipe.Id)
             {
-                return BadRequest();
+                return NotFound(id);
             }
             if (!ModelState.IsValid)
             {
@@ -123,7 +119,7 @@ namespace RecipeWebsiteMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return NotFound(id);
             }
 
             var recipe = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id);
@@ -131,7 +127,7 @@ namespace RecipeWebsiteMVC.Controllers
 
             if (recipe == null)
             {
-                return NotFound();
+                return NotFound(id);
             }
 
             return View(recipe);
@@ -142,16 +138,13 @@ namespace RecipeWebsiteMVC.Controllers
         [ValidateAntiForgeryToken] //Prevent Cross site attacks 
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-                      var recipe = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id);
+             var recipe = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id);
 
             if (recipe == null)
             {
-                return NotFound();
+                return NotFound(id);
             }
 
-            //_dBcontext.Directions.RemoveRange(recipe.Directions);
-            //_dBcontext.Ingredients.RemoveRange(recipe.Ingredients);
-            //_dBcontext.Recipes.Remove(recipe);
             _UnitOfWork.Recipe.DeleteCascade(recipe);
             await _UnitOfWork.SaveAsync();
             return RedirectToAction("Index");
