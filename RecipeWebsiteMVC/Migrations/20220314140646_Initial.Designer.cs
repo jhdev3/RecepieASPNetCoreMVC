@@ -12,8 +12,8 @@ using RecipeWebsiteMVC.Data;
 namespace RecipeWebsiteMVC.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220304092707_UpdatedIngridient")]
-    partial class UpdatedIngridient
+    [Migration("20220314140646_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,6 +27,7 @@ namespace RecipeWebsiteMVC.Migrations
             modelBuilder.Entity("RecipeWebsiteMVC.Models.Category", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DateOfCreation")
@@ -47,13 +48,13 @@ namespace RecipeWebsiteMVC.Migrations
             modelBuilder.Entity("RecipeWebsiteMVC.Models.Direction", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DateOfCreation")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RecipeId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Text")
@@ -70,6 +71,7 @@ namespace RecipeWebsiteMVC.Migrations
             modelBuilder.Entity("RecipeWebsiteMVC.Models.Ingredient", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DateOfCreation")
@@ -98,24 +100,22 @@ namespace RecipeWebsiteMVC.Migrations
             modelBuilder.Entity("RecipeWebsiteMVC.Models.Recipe", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Category")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateOfCreation")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EditedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Portions")
@@ -134,9 +134,7 @@ namespace RecipeWebsiteMVC.Migrations
                 {
                     b.HasOne("RecipeWebsiteMVC.Models.Recipe", null)
                         .WithMany("Directions")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RecipeId");
                 });
 
             modelBuilder.Entity("RecipeWebsiteMVC.Models.Ingredient", b =>

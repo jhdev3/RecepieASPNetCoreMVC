@@ -3,8 +3,8 @@
     ViewData["Title"] = "Skapa Recept";
 }
 
-<input type="hidden" id="IngridientCount" value="@ViewBag.IngridientsCount"> 
-<input type="hidden" id="DirectionCount" value="@ViewBag.DirectionsCount">
+<input type="hidden" id="IngridientCount" value="@Model.Ingredients.Count"> 
+<input type="hidden" id="DirectionCount" value="@Model.Directions.Count">
 
 
 <h1>Skapa</h1>
@@ -44,17 +44,14 @@
                 <div class="col-lg-4 col-md-6 col-sm-6 mt-1">
 
                     <p class="control-label">Ingredienser</p>
-                    @for (var i = 0; i < ViewBag.IngridientsCount; i++)
+                    @for (var i = 0; i < Model.Ingredients.Count; i++)
                     {
                      <div class="form-group d-flex align-items-end mt-1">
                         <input asp-for="Ingredients[i].Unit" class="form-control" placeholder="Antal" />
-                        <span asp-validation-for="Ingredients[0].Unit" class="text-danger"></span>
 
                         <input asp-for="Ingredients[i].UnitType" class="form-control" placeholder="Enhet" />
-                        <span asp-validation-for="Ingredients[i].UnitType" class="text-danger"></span>
 
                         <input asp-for="Ingredients[i].Name" class="form-control" placeholder="Namn" />
-                        <span asp-validation-for="Ingredients[i].Name" class="text-danger"></span>
                         <input asp-for="Ingredients[i].Id" type="hidden" /> <!--Viktigt För Edit-->
 
                     </div>
@@ -72,10 +69,9 @@
                 <div class="col-lg-4 col-md-6 col-sm-6 mt-1">
                     <p class="control-label">Instruktioner</p>
 
-                    @for (var i = 0; i < ViewBag.DirectionsCount; i++)
+                    @for (var i = 0; i < Model.Directions.Count; i++)
                     {
                         <textarea asp-for="Directions[i].Text" rows="2" class="form-control" placeholder="Instruktion"></textarea>
-                        <span asp-validation-for="Directions[i].Text" class="text-danger"></span>
                         <input asp-for="Directions[i].Id" type="hidden" />
                     }
                         

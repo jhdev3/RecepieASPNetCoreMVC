@@ -21,5 +21,7 @@ namespace RecipeWebsiteMVC.Models
         [ForeignKey("Recipe")]//Används i Databasen för att skapa relation etc ;) 
         public virtual string? RecipeId { get; set; }
 
+        //Kan bli ett extra attribut för binda underrubriker till ingridienser ;) 
+
     }
 }

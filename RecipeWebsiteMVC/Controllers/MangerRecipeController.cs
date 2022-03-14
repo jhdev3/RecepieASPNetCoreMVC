@@ -28,22 +28,20 @@ namespace RecipeWebsiteMVC.Controllers
         //Get - Create
         public IActionResult Create()
         {
-            ViewBag.IngridientsCount = 1;
-            ViewBag.DirectionsCount = 1;
+            Recipe r = new Recipe();    
             ViewBag.CreateEdit = "Create";
-
-            return View();  
+            
+            
+            return View(r);  
         }
         [HttpPost]  
         [ValidateAntiForgeryToken]  
-        public async Task<IActionResult> Create(Recipe recipe, IFormFile file)
+        public async Task<IActionResult> Create(Recipe recipe, IFormFile? file = null)
         {
 
             if (!ModelState.IsValid)
             {   
-                // in View stuff ;)
-                ViewBag.IngridientsCount = recipe.Ingredients.Count;
-                ViewBag.DirectionsCount = recipe.Directions.Count;
+  
                 //Typ av View istället för att copy pasta och hålla på att trixa med 2 views som i princip är Lika
                 ViewBag.CreateEdit = "Create"; 
                 return View(recipe);  
@@ -82,8 +80,7 @@ namespace RecipeWebsiteMVC.Controllers
                 return NotFound(id);
             }
            
-            ViewBag.IngridientsCount = recipe.Ingredients.Count;
-            ViewBag.DirectionsCount = recipe.Directions.Count;
+         
             ViewBag.CreateEdit = "Edit";//Typ av View
 
             return View("Create", recipe);//Slipper Göra 2 Typ lika  views
@@ -101,8 +98,7 @@ namespace RecipeWebsiteMVC.Controllers
             }
             if (!ModelState.IsValid)
             {
-                ViewBag.IngridientsCount = recipe.Ingredients.Count;
-                ViewBag.DirectionsCount = recipe.Directions.Count;
+            
                 ViewBag.CreateEdit = "Edit";
                 return View("Create", recipe);
             }
