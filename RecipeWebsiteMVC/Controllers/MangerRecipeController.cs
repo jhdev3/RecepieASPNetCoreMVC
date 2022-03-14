@@ -36,7 +36,7 @@ namespace RecipeWebsiteMVC.Controllers
         }
         [HttpPost]  
         [ValidateAntiForgeryToken]  
-        public async Task<IActionResult> Create(Recipe recipe)
+        public async Task<IActionResult> Create(Recipe recipe, IFormFile file)
         {
 
             if (!ModelState.IsValid)

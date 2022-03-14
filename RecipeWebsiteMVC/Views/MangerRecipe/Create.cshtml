@@ -12,84 +12,81 @@
 <hr />
 <div asp-validation-summary="All"></div>
 <div class="row">
-    <form asp-action="@ViewBag.CreateEdit"> 
+    <form method="post" asp-action="@ViewBag.CreateEdit" enctype="multipart/form-data"> <!--Allow File Uploads like an Image-->
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+       <input type="submit" value="@ViewBag.CreateEdit" class="btn btn-primary" />
         <div class="container">
+
             <div class="row">
-                <div class="col-4">
-                    <div class="form-group">
+                <div class="col-lg-4 col-md-8 col-sm-6">
                         <label asp-for="Title" class="control-label"></label>
                         <input asp-for="Title" class="form-control" />
                         <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
+                   
                         <label asp-for="Description" class="control-label"></label>
-                        <input asp-for="Description" class="form-control" />
+                        <textarea asp-for="Description" rows="3" class="form-control"></textarea> 
                         <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
+                  
+
                         <label asp-for="Category" class="control-label"></label>
                         <input asp-for="Category" class="form-control" />
                         <span asp-validation-for="Category" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Image" class="control-label"></label>
-                        <input asp-for="Image" class="form-control" />
-                        <span asp-validation-for="Image" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
+
                         <label asp-for="Portions" class="control-label"></label>
                         <input asp-for="Portions" class="form-control" />
                         <span asp-validation-for="Portions" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="@ViewBag.CreateEdit" class="btn btn-primary" />
-                    </div>
-                </div>
-                <div class="col-4">
-
+                        <label asp-for="Image" class="control-label"></label>
+                        <input type="file" class="form-control" />
                     
+              
+                    
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 mt-1">
+
+                    <p class="control-label">Ingredienser</p>
                     @for (var i = 0; i < ViewBag.IngridientsCount; i++)
                     {
-                     <div class="form-group">
+                     <div class="form-group d-flex align-items-end mt-1">
                         <input asp-for="Ingredients[i].Unit" class="form-control" placeholder="Antal" />
                         <span asp-validation-for="Ingredients[0].Unit" class="text-danger"></span>
 
                         <input asp-for="Ingredients[i].UnitType" class="form-control" placeholder="Enhet" />
                         <span asp-validation-for="Ingredients[i].UnitType" class="text-danger"></span>
 
-                        <input asp-for="Ingredients[i].Name" class="form-control" placeholder="Namn på ingridiens" />
+                        <input asp-for="Ingredients[i].Name" class="form-control" placeholder="Namn" />
                         <span asp-validation-for="Ingredients[i].Name" class="text-danger"></span>
                         <input asp-for="Ingredients[i].Id" type="hidden" /> <!--Viktigt För Edit-->
 
                     </div>
                     }
-                        
+                 <span id="input_fields_ingridients"> </span>
+   
 
                     
-                    <div id="input_fields_ingridients"> </div>
                    
                         <input type="button"
                                value="Lägg till ingridiens"
-                               class="btn btn-primary"
+                               class="btn btn-primary mt-1"
                                id="NewIngridient" />
                 </div>
-                <div class="col-4">
-                    <div class="form-group">
+                <div class="col-lg-4 col-md-6 col-sm-6 mt-1">
+                    <p class="control-label">Instruktioner</p>
+
                     @for (var i = 0; i < ViewBag.DirectionsCount; i++)
                     {
-                        <input asp-for="Directions[i].Text" class="form-control" placeholder="Instruktion" />
+                        <textarea asp-for="Directions[i].Text" rows="2" class="form-control" placeholder="Instruktion"></textarea>
                         <span asp-validation-for="Directions[i].Text" class="text-danger"></span>
                         <input asp-for="Directions[i].Id" type="hidden" />
                     }
                         
-                    </div>
-                    <div id="NewFieldOutPut"></div>
-                    <input type="button" id="NewDirection" value="Lägg till instruktion" class="btn btn-primary" />
+                   
+                    <span id="NewFieldOutPut" class="col-lg-4 col-md-6 col-sm-6 mt-1" ></span>
+                    <input type="button" id="NewDirection" value="Lägg till instruktion" class="btn btn-primary mt-1" />
                 </div>
            </div>
+             
         </div>
-
+       
     </form>
 </div>
 
