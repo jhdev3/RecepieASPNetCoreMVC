@@ -5,6 +5,7 @@ namespace RecipeWebsiteMVC.Models
     /// <summary>
     /// Basic model of what is needed for the recipe model. 
     /// </summary>
+   //Attribute Validate Never om man vill få bort saker som inte ska valideras
     public class Recipe : BaseEntity
     {
         [Required]

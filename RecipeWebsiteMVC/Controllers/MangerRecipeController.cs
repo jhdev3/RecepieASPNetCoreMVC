@@ -1,18 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using RecipeWebsiteMVC.Data;
 using RecipeWebsiteMVC.DataAccess.Interfaces;
 using RecipeWebsiteMVC.Models;
-
+//0176 grader tecknet
 namespace RecipeWebsiteMVC.Controllers
 {
     public class MangerRecipeController : Controller
     {
         private readonly IUnitOfWork _UnitOfWork;
-
-        public MangerRecipeController(IUnitOfWork context)
+        private readonly IWebHostEnvironment _hostEnvironment;//För ladda upp image
+        public MangerRecipeController(IUnitOfWork context, IWebHostEnvironment hostEnvironment = null) //Setting to null only so i dont need to moq this in tests 
         {
             _UnitOfWork = context;
+            _hostEnvironment = hostEnvironment; 
         }
         //MVC 4: Men intressant hur man kan använda sig av Performing Multiple Operations in Parallel
 
@@ -36,7 +38,7 @@ namespace RecipeWebsiteMVC.Controllers
         }
         [HttpPost]  
         [ValidateAntiForgeryToken]  
-        public async Task<IActionResult> Create(Recipe recipe, IFormFile? file = null)
+        public async Task<IActionResult> Create(Recipe recipe, IFormFile? file = null) //Made it null to not mess with my tests 
         {
 
             if (!ModelState.IsValid)
@@ -46,9 +48,18 @@ namespace RecipeWebsiteMVC.Controllers
                 ViewBag.CreateEdit = "Create"; 
                 return View(recipe);  
             }
+            if(file != null) { //Should always be null in the tests
             ///Database things :)
+                string fileName = Guid.NewGuid().ToString();    //Om man laddar upp filer med samma namn kan det skapa problem.
+                string upload = Path.Combine(_hostEnvironment.WebRootPath, @"Images\FakeBlobStorage"); //Vart filen ska sparas
+                string extension = Path.GetExtension(file.FileName); //Får typ av fil
+                using(var fileStream = new FileStream(Path.Combine(upload, fileName+ extension), FileMode.Create))
+                {
+                    file.CopyTo(fileStream);    
+                }
+                recipe.Image = @"Images\FakeBlobStorage" + fileName + extension; //Eftersom jag spara filen i root skulle jag spara I ett riktigt blobstorage bör det vara upload+filename +extension
+            }
             _UnitOfWork.Recipe.Add(recipe); 
-
             await _UnitOfWork.SaveAsync();//UnitOfWork :)
             return RedirectToAction("Index");   
         }
