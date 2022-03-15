@@ -61,6 +61,8 @@ namespace RecipeWebsiteMVC.Controllers
             }
             _UnitOfWork.Recipe.Add(recipe); 
             await _UnitOfWork.SaveAsync();//UnitOfWork :)
+            TempData["Success"] = $"Lyckades skapa : {recipe.Title} :)";
+
             return RedirectToAction("Index");   
         }
         public async Task<IActionResult> Details(string id)
@@ -136,8 +138,9 @@ namespace RecipeWebsiteMVC.Controllers
             catch (DbUpdateConcurrencyException ex)
             {
                 RedirectToAction("Index");
-                TempData["Message"] = ex.Message;
+                TempData["Error"] = $"Misslyckades att updatera : {recipe.Title}";
             }
+            TempData["Success"] = $"Lyckades updatera : {recipe.Title} :)";
 
             return RedirectToAction("Index");
         }
@@ -175,6 +178,8 @@ namespace RecipeWebsiteMVC.Controllers
 
             _UnitOfWork.Recipe.DeleteCascade(recipe);
             await _UnitOfWork.SaveAsync();
+            TempData["Success"] = $"Lyckades ta bort : {recipe.Title} :)";
+
             return RedirectToAction("Index");
         }
     }
