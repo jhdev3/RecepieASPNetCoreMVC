@@ -99,7 +99,7 @@ namespace RecipeWebsiteMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, Recipe recipe)
+        public async Task<IActionResult> Edit(string id, Recipe recipe, IFormFile? file = null)
         {
             //Säkerhet för att inte manipulera Id och ändra på något annat
             //Bör vara samma då det används för att komma till Edit sidan.
@@ -113,11 +113,32 @@ namespace RecipeWebsiteMVC.Controllers
                 ViewBag.CreateEdit = "Edit";
                 return View("Create", recipe);
             }
-           
+            //File
+            if (file != null)
+            { //Should always be null in the tests
+                ///Database things :)
+                string fileName = Guid.NewGuid().ToString();    //Om man laddar upp filer med samma namn kan det skapa problem.
+                string upload = Path.Combine(_hostEnvironment.WebRootPath, @"Images\FakeBlobStorage"); //Vart filen ska sparas
+                string extension = Path.GetExtension(file.FileName); //Får typ av fil
+                using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
+                recipe.Image = @"Images\FakeBlobStorage" + fileName + extension; //Eftersom jag spara filen i root skulle jag spara I ett riktigt blobstorage bör det vara upload+filename +extension
+            }
 
             _UnitOfWork.Recipe.Update(recipe);
-           
-            await _UnitOfWork.SaveAsync();
+            //Mindre sanolikt här att det uppkommer för att update fungerar lite anorlunda än Kategorin men det skulle kunna hända så bättre att vara safe :)
+            try
+            {
+                await _UnitOfWork.SaveAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                RedirectToAction("Index");
+                TempData["Message"] = ex.Message;
+            }
+
             return RedirectToAction("Index");
         }
 
