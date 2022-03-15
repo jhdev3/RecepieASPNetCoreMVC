@@ -7,6 +7,8 @@ namespace RecipeWebsiteMVC.Models
     {
         [Required]
         public string Text { get; set; }    
+
+        //Kanske behöver ett "Order attriubte" för att sätta ordningen på instruktionerna :)
        
     }
 }

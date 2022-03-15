@@ -1,18 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using RecipeWebsiteMVC.Data;
 using RecipeWebsiteMVC.DataAccess.Interfaces;
 using RecipeWebsiteMVC.Models;
-
+//0176 grader tecknet
 namespace RecipeWebsiteMVC.Controllers
 {
     public class MangerRecipeController : Controller
     {
         private readonly IUnitOfWork _UnitOfWork;
-
-        public MangerRecipeController(IUnitOfWork context)
+        private readonly IWebHostEnvironment _hostEnvironment;//För ladda upp image
+        public MangerRecipeController(IUnitOfWork context, IWebHostEnvironment hostEnvironment = null) //Setting to null only so i dont need to moq this in tests 
         {
             _UnitOfWork = context;
+            _hostEnvironment = hostEnvironment; 
         }
         //MVC 4: Men intressant hur man kan använda sig av Performing Multiple Operations in Parallel
 
@@ -28,29 +30,36 @@ namespace RecipeWebsiteMVC.Controllers
         //Get - Create
         public IActionResult Create()
         {
-            ViewBag.IngridientsCount = 1;
-            ViewBag.DirectionsCount = 1;
+            Recipe r = new Recipe();    
             ViewBag.CreateEdit = "Create";
-
-            return View();  
+            
+            
+            return View(r);  
         }
         [HttpPost]  
         [ValidateAntiForgeryToken]  
-        public async Task<IActionResult> Create(Recipe recipe)
+        public async Task<IActionResult> Create(Recipe recipe, IFormFile? file = null) //Made it null to not mess with my tests 
         {
 
             if (!ModelState.IsValid)
             {   
-                // in View stuff ;)
-                ViewBag.IngridientsCount = recipe.Ingredients.Count;
-                ViewBag.DirectionsCount = recipe.Directions.Count;
+  
                 //Typ av View istället för att copy pasta och hålla på att trixa med 2 views som i princip är Lika
                 ViewBag.CreateEdit = "Create"; 
                 return View(recipe);  
             }
+            if(file != null) { //Should always be null in the tests
             ///Database things :)
+                string fileName = Guid.NewGuid().ToString();    //Om man laddar upp filer med samma namn kan det skapa problem.
+                string upload = Path.Combine(_hostEnvironment.WebRootPath, @"Images\FakeBlobStorage"); //Vart filen ska sparas
+                string extension = Path.GetExtension(file.FileName); //Får typ av fil
+                using(var fileStream = new FileStream(Path.Combine(upload, fileName+ extension), FileMode.Create))
+                {
+                    file.CopyTo(fileStream);    
+                }
+                recipe.Image = @"Images\FakeBlobStorage" + fileName + extension; //Eftersom jag spara filen i root skulle jag spara I ett riktigt blobstorage bör det vara upload+filename +extension
+            }
             _UnitOfWork.Recipe.Add(recipe); 
-
             await _UnitOfWork.SaveAsync();//UnitOfWork :)
             return RedirectToAction("Index");   
         }
@@ -82,8 +91,7 @@ namespace RecipeWebsiteMVC.Controllers
                 return NotFound(id);
             }
            
-            ViewBag.IngridientsCount = recipe.Ingredients.Count;
-            ViewBag.DirectionsCount = recipe.Directions.Count;
+         
             ViewBag.CreateEdit = "Edit";//Typ av View
 
             return View("Create", recipe);//Slipper Göra 2 Typ lika  views
@@ -91,7 +99,7 @@ namespace RecipeWebsiteMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, Recipe recipe)
+        public async Task<IActionResult> Edit(string id, Recipe recipe, IFormFile? file = null)
         {
             //Säkerhet för att inte manipulera Id och ändra på något annat
             //Bör vara samma då det används för att komma till Edit sidan.
@@ -101,16 +109,36 @@ namespace RecipeWebsiteMVC.Controllers
             }
             if (!ModelState.IsValid)
             {
-                ViewBag.IngridientsCount = recipe.Ingredients.Count;
-                ViewBag.DirectionsCount = recipe.Directions.Count;
+            
                 ViewBag.CreateEdit = "Edit";
                 return View("Create", recipe);
             }
-           
+            //File
+            if (file != null)
+            { //Should always be null in the tests
+                ///Database things :)
+                string fileName = Guid.NewGuid().ToString();    //Om man laddar upp filer med samma namn kan det skapa problem.
+                string upload = Path.Combine(_hostEnvironment.WebRootPath, @"Images\FakeBlobStorage"); //Vart filen ska sparas
+                string extension = Path.GetExtension(file.FileName); //Får typ av fil
+                using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
+                recipe.Image = @"Images\FakeBlobStorage" + fileName + extension; //Eftersom jag spara filen i root skulle jag spara I ett riktigt blobstorage bör det vara upload+filename +extension
+            }
 
             _UnitOfWork.Recipe.Update(recipe);
-           
-            await _UnitOfWork.SaveAsync();
+            //Mindre sanolikt här att det uppkommer för att update fungerar lite anorlunda än Kategorin men det skulle kunna hända så bättre att vara safe :)
+            try
+            {
+                await _UnitOfWork.SaveAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                RedirectToAction("Index");
+                TempData["Message"] = ex.Message;
+            }
+
             return RedirectToAction("Index");
         }
 
