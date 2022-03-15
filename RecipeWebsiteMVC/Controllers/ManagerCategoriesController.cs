@@ -50,6 +50,8 @@ namespace RecipeWebsiteMVC.Controllers
             {
                 _UnitOfWork.Category.Add(category);
                 await _UnitOfWork.SaveAsync();
+
+                TempData["Success"] = $"Lyckades skapa : {category.Name} :)";
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -97,8 +99,10 @@ namespace RecipeWebsiteMVC.Controllers
                 catch (DbUpdateConcurrencyException ex)
                 {
                     RedirectToAction("Index");
-                   TempData["Message"] = ex.Message;
+                    TempData["Error"] = $"Misslyckades att updatera : {category.Name}"; //ex.Message om man vill se hela trevliga meddelandet eller spara till någon logg fil om man har det.
                 }
+                TempData["Success"] = $"Lyckades updatera : {category.Name} :)";
+
                 return RedirectToAction("Index");
             }
             return View(category);
@@ -134,6 +138,8 @@ namespace RecipeWebsiteMVC.Controllers
             }
             _UnitOfWork.Category.Remove(category);
             await _UnitOfWork.SaveAsync();
+            TempData["Success"] = $"Lyckades Ta bort : {category.Name} :)";
+
             return RedirectToAction(nameof(Index));
         }
 
