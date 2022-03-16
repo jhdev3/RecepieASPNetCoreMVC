@@ -1,8 +1,24 @@
-﻿@{
+﻿@model IEnumerable<Recipe>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Välkommen</h1>
+    <p>Site under production men helt okej :)</p>
 </div>
+
+<div class="media-scroller_row snaps-inline">
+    @foreach (var r in Model)
+    {
+        <div class="elements">
+            <img src="@r.Image" alt="@r.Title picture"/>
+            <a asp-action="Details" asp-route-id="@r.Id">
+            <p class="card-title">@r.Title</p>
+            </a>             
+        </div>   
+
+
+    }
+</div> 

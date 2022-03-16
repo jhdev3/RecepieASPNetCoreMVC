@@ -16,3 +16,49 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.media-scroller_row {
+    --_spacer: 1rem;
+    display: grid;
+    gap: var(--spacer);
+    grid-auto-flow: column;
+    grid-auto-columns: 29%; /* Width :) trevligt om man ser om det kommer en till efter inte jämt delbart med 100*/
+
+    padding: 0 var(--_spacer) var(--_spacer);
+
+    overflow-x: auto; /* Bara för media Scrollern*/
+    overscroll-behavior-inline: contain;
+}
+
+.elements{
+    display:grid;
+    grid-template-rows: min-content;
+    padding: var(--_spacer);
+    gap: var(--_spacer);
+    border-radius: 5px;
+    box-shadow: inherit;
+}
+
+.elements > img{
+    inline-size: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.snaps-inline{
+    scroll-snap-type: inline mandatory;
+    scroll-padding-inline: var(--_spacer, 1rem);
+}
+
+.snaps-inline * {
+    scroll-snap-align: start;
+}
+
+.img-extra {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+ol > li::marker {
+    font-weight: bold;
+}

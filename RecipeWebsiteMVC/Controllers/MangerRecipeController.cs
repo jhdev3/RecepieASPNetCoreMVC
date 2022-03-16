@@ -57,7 +57,7 @@ namespace RecipeWebsiteMVC.Controllers
                 {
                     file.CopyTo(fileStream);    
                 }
-                recipe.Image = @"Images\FakeBlobStorage" + fileName + extension; //Eftersom jag spara filen i root skulle jag spara I ett riktigt blobstorage bör det vara upload+filename +extension
+                recipe.Image = @"Images\FakeBlobStorage\" + fileName + extension; //Eftersom jag spara filen i root skulle jag spara I ett riktigt blobstorage bör det vara upload+filename +extension
             }
             _UnitOfWork.Recipe.Add(recipe); 
             await _UnitOfWork.SaveAsync();//UnitOfWork :)
@@ -126,7 +126,7 @@ namespace RecipeWebsiteMVC.Controllers
                 {
                     file.CopyTo(fileStream);
                 }
-                recipe.Image = @"Images\FakeBlobStorage" + fileName + extension; //Eftersom jag spara filen i root skulle jag spara I ett riktigt blobstorage bör det vara upload+filename +extension
+                recipe.Image = @"Images\FakeBlobStorage\" + fileName + extension; //Eftersom jag spara filen i root skulle jag spara I ett riktigt blobstorage bör det vara upload+filename +extension
             }
 
             _UnitOfWork.Recipe.Update(recipe);
