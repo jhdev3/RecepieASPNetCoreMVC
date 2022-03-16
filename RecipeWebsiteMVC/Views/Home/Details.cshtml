@@ -1,0 +1,52 @@
+﻿@model Recipe
+
+<div class="card container pt-4">
+    <div class="card-header bg-primary text-light ms-lg-0 row">
+        <div class="col-12 col-md-6">
+            <h1>@Model.Title</h1>
+        </div>
+        <div class="col-12 col-md-6 text-end pt-4">
+            <span class="badge bg-info pt-2"> @Model.Category </span>
+        </div>
+    </div>
+    <div class="card-body container row">
+        <div class="col-12 col-md-6">
+             <img class="img-thumbnail img-extra" src="~/@Model.Image" alt="@Model.Title picture"/>
+        </div>
+        <div class="col-6 col-md-6 row align-content-center">
+            <p class="card-text">@Model.Description</p>
+        </div>
+        <!-- Fixa portions med drop down select skit 
+         <div class="col-6 col-md-6 row">
+            <p class="card-text">@Model.Description</p>
+        </div>
+        -->
+        <div class="row">
+            <div class="col-6 col-md-6 col-sm-12">
+                <ul>
+                   @foreach(var r in Model.Ingredients)
+                    {
+                        <li> <!--Fix det heading/ underrubrik här-->
+                            <span>@(r.Unit.HasValue ? String.Format("{0:0.0}", r.Unit) : " ") </span>
+                            <span>@r.UnitType </span>
+                            <span>@r.Name</span>
+                        </li>
+                    }
+                </ul>                 
+             </div>
+                <div class="col-6 col-md-6 col-sm-12">
+                <ol>
+                   @foreach(var d in Model.Directions)
+                    {
+                        <li>
+                            <p class="card-text">@d.Text</p>
+                        </li>
+                    }
+                </ol>                 
+             </div>
+        </div>
+    </div> 
+
+
+
+</div>

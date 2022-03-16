@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RecipeWebsiteMVC.DataAccess.Interfaces;
 using RecipeWebsiteMVC.Models;
 using System.Diagnostics;
 
@@ -7,20 +8,24 @@ namespace RecipeWebsiteMVC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IUnitOfWork _UnitOfWork;
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
+            _UnitOfWork = unitOfWork;
         }
 
-        public IActionResult Index()
+        public  async Task<IActionResult> Index()
         {
-            return View();
+            IEnumerable<Recipe> recipes =  await _UnitOfWork.Recipe.GetAllAsync();
+            return View(recipes);
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Details(string id)
         {
-            return View();
+            Recipe r = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id); 
+            
+            return View(r);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
