@@ -4,6 +4,8 @@ using Microsoft.Extensions.Hosting;
 using RecipeWebsiteMVC.Data;
 using RecipeWebsiteMVC.DataAccess.Interfaces;
 using RecipeWebsiteMVC.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 //0176 grader tecknet
 namespace RecipeWebsiteMVC.Controllers
 {
@@ -109,6 +111,7 @@ namespace RecipeWebsiteMVC.Controllers
             {
                 return NotFound(id);
             }
+            
             if (!ModelState.IsValid)
             {
             

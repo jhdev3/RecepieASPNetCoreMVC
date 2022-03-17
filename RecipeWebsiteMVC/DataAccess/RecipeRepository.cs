@@ -2,6 +2,7 @@
 using RecipeWebsiteMVC.DataAccess.Interfaces;
 using RecipeWebsiteMVC.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 /* 
  *Regel bara i de här klasserna man får prata med db ;) 
@@ -31,7 +32,7 @@ namespace RecipeWebsiteMVC.DataAccess
         /// <param name="id"></param>
         /// <returns>Recipe Can include null values</returns>
         public async Task<Recipe> GetDirectionsAndIngredients(string id)
-        {
+       {
             //Skapar Eager Loading med Include:)
             Recipe? recipe = await _db.Recipes
               .Where(r => r.Id == id)
@@ -39,8 +40,18 @@ namespace RecipeWebsiteMVC.DataAccess
               .Include(d => d.Directions)
               .FirstOrDefaultAsync();
 
+            recipe.Ingredients = SortOrder(recipe.Ingredients);
+            recipe.Directions= SortOrder(recipe.Directions);
             return recipe;
 
+        }
+        //Made it Generic beacuse i am useing it twice 
+        //Ilist didnt have sort could use order by in Include skulle kunna vara lite bättre prestanda mässigt
+        private IList<T> SortOrder<T>(IList<T> list)
+        {
+            var sort = list.ToList();
+            sort.Sort();
+            return sort;
         }
 
         /// <summary>
