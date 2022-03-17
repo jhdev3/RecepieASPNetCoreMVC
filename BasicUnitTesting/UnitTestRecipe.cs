@@ -8,6 +8,7 @@ using RecipeWebsiteMVC.DataAccess.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace BasicUnitTesting
 {
@@ -100,7 +101,8 @@ namespace BasicUnitTesting
             .Verifiable();
             UnitiOfWork.Setup(c => c.Recipe).Returns(RecipeRepo.Object);
             MangerRecipeController Mrc = new MangerRecipeController(UnitiOfWork.Object);
-
+            var mockTempData = new Mock<ITempDataDictionary>();
+            Mrc.TempData = mockTempData.Object;
 
             //Act
             var model = new Recipe
@@ -246,9 +248,11 @@ namespace BasicUnitTesting
             RecipeRepo.Setup(c => c.Update(It.IsAny<Recipe>()))
            .Verifiable();
             UnitiOfWork.Setup(c => c.Recipe).Returns(RecipeRepo.Object);
-            MangerRecipeController Mcc = new MangerRecipeController(UnitiOfWork.Object);
+            MangerRecipeController Mrc = new MangerRecipeController(UnitiOfWork.Object);
+            var mockTempData = new Mock<ITempDataDictionary>();
+            Mrc.TempData = mockTempData.Object;
             //Act
-            var actionResult = await Mcc.Edit(id, recipe);
+            var actionResult = await Mrc.Edit(id, recipe);
 
             // Assert
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(actionResult);
@@ -324,9 +328,11 @@ namespace BasicUnitTesting
             RecipeRepo.Setup(c => c.GetDirectionsAndIngredients(id)).ReturnsAsync(recipe);//Test if category is null
             RecipeRepo.Setup(c => c.Remove(It.IsAny<Recipe>())).Verifiable();
             UnitiOfWork.Setup(u => u.Recipe).Returns(RecipeRepo.Object);
-            MangerRecipeController Mcc = new MangerRecipeController(UnitiOfWork.Object);
+            MangerRecipeController Mrc = new MangerRecipeController(UnitiOfWork.Object);
+            var mockTempData = new Mock<ITempDataDictionary>();
+            Mrc.TempData = mockTempData.Object;
             //Act
-            var actionResult = await Mcc.DeleteConfirmed(id); //Check during debugging test and wanted just result
+            var actionResult = await Mrc.DeleteConfirmed(id); //Check during debugging test and wanted just result
 
             // Assert
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(actionResult);

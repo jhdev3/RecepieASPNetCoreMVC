@@ -8,6 +8,7 @@ using RecipeWebsiteMVC.DataAccess.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace BasicUnitTesting
 {
@@ -91,7 +92,8 @@ namespace BasicUnitTesting
             .Verifiable();
             UnitiOfWork.Setup(c=>c.Category).Returns(CategoryRepo.Object);  
             ManagerCategoriesController Mcc = new ManagerCategoriesController(UnitiOfWork.Object);
-            
+            var mockTempData = new Mock<ITempDataDictionary>();
+            Mcc.TempData = mockTempData.Object;
 
             //Act
 
@@ -99,8 +101,10 @@ namespace BasicUnitTesting
             {
                 Name = "Test"
             };
-            var actionResult = await Mcc.Create(model);
-            
+            //var actionResult = await Mcc.Create(model);
+            var actionResult = await Mcc.Create(model) as RedirectToActionResult;
+
+
 
             // Assert - Kollar om jag blev Redirected och till samma controller samt att det är index.
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(actionResult);
@@ -193,6 +197,8 @@ namespace BasicUnitTesting
            .Verifiable();
             UnitiOfWork.Setup(c => c.Category).Returns(CategoryRepo.Object);
             ManagerCategoriesController Mcc = new ManagerCategoriesController(UnitiOfWork.Object);
+            var mockTempData = new Mock<ITempDataDictionary>();
+            Mcc.TempData = mockTempData.Object;
             //Act
             var actionResult = await Mcc.Edit(id, category); 
 
@@ -274,6 +280,9 @@ namespace BasicUnitTesting
             CategoryRepo.Setup(c => c.Remove(It.IsAny<Category>())).Verifiable();
             UnitiOfWork.Setup(u => u.Category).Returns(CategoryRepo.Object);
             ManagerCategoriesController Mcc = new ManagerCategoriesController(UnitiOfWork.Object);
+            var mockTempData = new Mock<ITempDataDictionary>();
+            Mcc.TempData = mockTempData.Object;
+
             //Act
             var actionResult = await Mcc.DeleteConfirmed(id); //Check during debugging test and wanted just result
 
