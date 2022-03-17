@@ -21,14 +21,15 @@ namespace RecipeWebsiteMVC.Models
         // [ValidateNever] //Fungerar inte för tillfälet 
         //[Range(0.01, 1000000.99,
         //ErrorMessage = "Value for {0} must be between {1} and {2}.")]
-      //  [Range(0.01, 1000000.99)]
+        //  [Range(0.01, 1000000.99)]
+        // [RegularExpression(@"^\((?=.)([+-] ? ([0 - 9] *)(\.([0 - 9] +)) ?)\)$")]
+        /*Lössningen en så länge var att ändra i kontrollpanelen region input för decimal till . istället för , */
         [DisplayFormat(DataFormatString = "{0:0.0}")]
         [Range(0, 9999999999.999999)]
-       // [RegularExpression(@"^\((?=.)([+-] ? ([0 - 9] *)(\.([0 - 9] +)) ?)\)$")]
         public double? Unit { get; set; }
         public string? UnitType { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Namn/Underrubrik på Ingrdiens krävs")]
         public string Name { get; set; }
 
         [ForeignKey("Recipe")]//Används i Databasen för att skapa relation etc ;) 
