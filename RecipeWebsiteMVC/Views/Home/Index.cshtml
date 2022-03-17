@@ -13,7 +13,7 @@
     @foreach (var r in Model)
     {
         <div class="elements">
-            <img src="@r.Image" alt="@r.Title picture"/>
+            <img src="~/@r.Image" alt="@r.Title picture"/>
             <a asp-action="Details" asp-route-id="@r.Id">
             <p class="card-title">@r.Title</p>
             </a>             

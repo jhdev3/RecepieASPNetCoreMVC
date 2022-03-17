@@ -1,13 +1,13 @@
 ﻿@model RecipeWebsiteMVC.Models.Recipe
 @{
-    ViewData["Title"] = "Skapa Recept";
+    ViewData["Title"] = $"{@ViewBag.CreateEdit} Recept";
 }
 
 <input type="hidden" id="IngridientCount" value="@Model.Ingredients.Count"> 
 <input type="hidden" id="DirectionCount" value="@Model.Directions.Count">
 
 
-<h1>Skapa</h1>
+<h1>@ViewBag.CreateEdit</h1>
 <h4>Recept</h4>
 <hr />
 <div asp-validation-summary="All"></div>
@@ -47,20 +47,18 @@
                     @for (var i = 0; i < Model.Ingredients.Count; i++)
                     {
                      <div class="form-group d-flex align-items-end mt-1">
-                        <input asp-for="Ingredients[i].Unit" class="form-control" placeholder="Antal" />
+                        <input asp-for="Ingredients[i].Unit" type="number" class="form-control" placeholder="Antal  min="0" step="0.01" />
 
                         <input asp-for="Ingredients[i].UnitType" class="form-control" placeholder="Enhet" />
 
                         <input asp-for="Ingredients[i].Name" class="form-control" placeholder="Namn" />
                         <input asp-for="Ingredients[i].Id" type="hidden" /> <!--Viktigt För Edit-->
 
+                        <input asp-for="Ingredients[i].DisplayOrder" type="hidden">
+
                     </div>
                     }
                  <span id="input_fields_ingridients"> </span>
-   
-
-                    
-                   
                         <input type="button"
                                value="Lägg till ingridiens"
                                class="btn btn-primary mt-1"
@@ -73,6 +71,8 @@
                     {
                         <textarea asp-for="Directions[i].Text" rows="2" class="form-control" placeholder="Instruktion"></textarea>
                         <input asp-for="Directions[i].Id" type="hidden" />
+                        <input asp-for="Directions[i].DisplayOrder" type="hidden">
+
                     }
                         
                    

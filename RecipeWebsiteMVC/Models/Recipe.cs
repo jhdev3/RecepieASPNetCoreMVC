@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace RecipeWebsiteMVC.Models
 {
@@ -22,7 +23,8 @@ namespace RecipeWebsiteMVC.Models
         //Göra dessa till virtual skulle kunna öppna för lazy loading. Skapar n+1 extra queries.
         //Vilket vi inte vill ha för en web app. Försöka undvik virtual här
         //Kan också sätt lazyloading till false för AppDbContext
-        public IList<Direction> Directions { get; set; }         
+        public IList<Direction> Directions { get; set; }
+        [ValidateNever]
         public IList<Ingredient> Ingredients { get; set; }
 
         public DateTime? EditedAt { get; set; }
