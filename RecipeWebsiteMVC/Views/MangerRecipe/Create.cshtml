@@ -47,14 +47,15 @@
                     @for (var i = 0; i < Model.Ingredients.Count; i++)
                     {
                      <div class="form-group d-flex align-items-end mt-1">
-                        <input asp-for="Ingredients[i].Unit" type="number" class="form-control" placeholder="Antal  min="0" step="0.01" />
+                        <input asp-for="@Model.Ingredients[i].Unit" type="number" step="any"  class="form-control" />
 
-                        <input asp-for="Ingredients[i].UnitType" class="form-control" placeholder="Enhet" />
+                        <input asp-for="@Model.Ingredients[i].UnitType" class="form-control" placeholder="Enhet" />
 
-                        <input asp-for="Ingredients[i].Name" class="form-control" placeholder="Namn" />
-                        <input asp-for="Ingredients[i].Id" type="hidden" /> <!--Viktigt För Edit-->
+                        <input asp-for="@Model.Ingredients[i].Name" class="form-control" placeholder="Namn" />
+                        <input asp-for="@Model.Ingredients[i].Id" type="hidden" /> <!--Viktigt För Edit-->
 
-                        <input asp-for="Ingredients[i].DisplayOrder" type="hidden">
+                        <input asp-for="@Model.Ingredients[i].DisplayOrder" type="hidden">
+                        <input type="button" value="Ta bort" class="btn btn-outline-danger mt-1" onclick="RemoveFields(this)" />
 
                     </div>
                     }
@@ -69,11 +70,14 @@
 
                     @for (var i = 0; i < Model.Directions.Count; i++)
                     {
-                        <textarea asp-for="Directions[i].Text" rows="2" class="form-control" placeholder="Instruktion"></textarea>
-                        <input asp-for="Directions[i].Id" type="hidden" />
-                        <input asp-for="Directions[i].DisplayOrder" type="hidden">
-
+                        <div class="form-group d-flex align-items-end mt-1"> 
+                            <textarea asp-for="Directions[i].Text" rows="2" class="form-control" placeholder="Instruktion"></textarea>
+                            <input asp-for="Directions[i].Id" type="hidden" />
+                            <input asp-for="Directions[i].DisplayOrder" type="hidden">
+                            <input type="button" value="Ta bort" class="btn btn-outline-danger float-right" onclick="RemoveFieldsDir(this)" />
+                        </div>
                     }
+                    
                         
                    
                     <span id="NewFieldOutPut" class="col-lg-4 col-md-6 col-sm-6 mt-1" ></span>
@@ -93,8 +97,9 @@
 <script src="~/js/NewInstruktionField.js"></script>
 
 <!--Client side validation-->
+
 @section Scripts {
     @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+    }
 }
