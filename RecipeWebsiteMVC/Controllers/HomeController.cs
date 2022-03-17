@@ -23,8 +23,13 @@ namespace RecipeWebsiteMVC.Controllers
 
         public async Task<IActionResult> Details(string id)
         {
-            Recipe r = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id); 
-            
+            Recipe r = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id);
+            bool isAjax = HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+            if (isAjax)
+            {
+                return PartialView("Details", r);
+            }
+
             return View(r);
         }
 

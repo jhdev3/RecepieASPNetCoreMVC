@@ -8,6 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddControllers(options =>
+{
+    options.ModelBinderProviders.Add(new DoubleEntityBinderProvider());
+});
 //Setting up the connection string for AppDBContext
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
