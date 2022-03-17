@@ -8,9 +8,20 @@
 
 <div>
     <h4>Recept</h4>
+                
+    <a class="Details" id="@Model.Id" href="#"><h3 class="text-right">View</h3> 
+        
+    </a>
+
     <hr />
     <div>    
     <dl class="row">
+        <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Id)
+        </dd>
         <dt class = "col-sm-2">
                 @Html.DisplayNameFor(model => model.Title)
         </dt>
@@ -90,4 +101,55 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
+
+
 </div>
+     <div id="partialModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+@section Scripts {
+    
+
+  <script type="text/javascript">
+        $(function () {
+            $(".Details").click(function () {
+                var Id = $(this).attr("id");
+                console.log(Id);
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/Details",
+                    data: { "id": Id },
+                    success: function (response) {
+                        $("#partialModal").find(".modal-body").html(response);
+                        $("#partialModal").modal('show');
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+}
