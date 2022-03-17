@@ -63,3 +63,12 @@ ol > li::marker {
     font-weight: bold;
 }
 
+.partialViewModal{
+    padding: 1em;
+
+}
+
+.partialViewModal::backdrop{
+    background: linear-gradient(45deg, red, blue, green);
+    opacity: 0.4;
+}
