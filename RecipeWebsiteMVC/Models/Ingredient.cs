@@ -16,11 +16,18 @@ namespace RecipeWebsiteMVC.Models
     {
 
         //[RegularExpression(@"^/(\d+(?:\.\d+)?)/$", ErrorMessage = "value of format 9.99")]
-         //Super problem med input decimaler för number, Skulle kunna göra text och använda regexp och parasa allt men det orkar inte just nu
+        //Super problem med input decimaler för number, Skulle kunna göra text och använda regexp och parasa allt men det orkar inte just nu
         //[Range(0.01, 1000000)]
-        [ValidateNever]
+        // [ValidateNever] //Fungerar inte för tillfälet 
+        //[Range(0.01, 1000000.99,
+        //ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+      //  [Range(0.01, 1000000.99)]
+        [DisplayFormat(DataFormatString = "{0:0.0}")]
+        [Range(0, 9999999999.999999)]
+       // [RegularExpression(@"^\((?=.)([+-] ? ([0 - 9] *)(\.([0 - 9] +)) ?)\)$")]
         public double? Unit { get; set; }
         public string? UnitType { get; set; }
+
         [Required]
         public string Name { get; set; }
 
@@ -30,7 +37,7 @@ namespace RecipeWebsiteMVC.Models
         //Kan bli ett extra attribut för hålla ordning på ingridienserna till ingridienser ;) 
         public int DisplayOrder { get; set; }
 
-        //använder Sort istället för order by här kan det finnas fördel att använda orberby etc i query med tanke på prestanda:)
+        //använder Sort istället för order by, här kan det finnas fördel att använda orberby etc i query med tanke på prestanda:)
         public int CompareTo(Ingredient? other)
         {
             return DisplayOrder.CompareTo(other.DisplayOrder);

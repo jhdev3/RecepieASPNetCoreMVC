@@ -24,7 +24,6 @@ namespace RecipeWebsiteMVC.Models
         //Vilket vi inte vill ha för en web app. Försöka undvik virtual här
         //Kan också sätt lazyloading till false för AppDbContext
         public IList<Direction> Directions { get; set; }
-        [ValidateNever]
         public IList<Ingredient> Ingredients { get; set; }
 
         public DateTime? EditedAt { get; set; }
