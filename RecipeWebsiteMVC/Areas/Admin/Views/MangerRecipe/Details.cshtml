@@ -106,11 +106,13 @@
     <a asp-action="Index">Back to List</a>
 </div>
 <dialog class="partialViewModal" id="partialViewModal">
+    <div class="row text-end">    
+     <a href="#" class="" id="close-icon" >
+        <i class="bi bi-x-circle"></i>
+    </a>
+    </div>
 
-    <button type="button" class="close-icon" aria-label="Close">
-    </button>
-
-    <partial name="~/Views/Home/Details.cshtml" model="@Model" />
+    <partial name="~/Areas/User/Views/Home/Details.cshtml" model="@Model" />
     <button type="button" id="close-button" class="btn btn-dark">Close</button>
 </dialog>
 
@@ -164,7 +166,7 @@
         const modal = document.querySelector("#partialViewModal");
         const openModal = document.querySelector(".Open-button");
         const closeModal = document.querySelector("#close-button");
-        const closeModal2 = document.querySelector(".close-icon");
+        const closeModal2 = document.querySelector("#close-icon");
                                 console.log(closeModal);
                                  console.log(closeModal2);
 

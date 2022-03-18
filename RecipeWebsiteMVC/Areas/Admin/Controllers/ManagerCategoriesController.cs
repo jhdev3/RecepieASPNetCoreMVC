@@ -3,15 +3,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RecipeWebsiteMVC.Data;
 using RecipeWebsiteMVC.DataAccess.Interfaces;
 using RecipeWebsiteMVC.Models;
+using RecipeWebsiteMVC.Models.UserRoles;
 
 namespace RecipeWebsiteMVC.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = UR.Role_Admin)]
     public class ManagerCategoriesController : Controller
     {
         //Viktigt med private och readonly Readonly då DbContext inte är thread-safe, IE trådar har tillgång till appens "Data"  

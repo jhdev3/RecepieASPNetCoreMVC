@@ -2,7 +2,7 @@ let NewIngridientButton = document.getElementById("NewIngridient");
 let index = document.getElementById("IngridientCount").value;
 let wrapper = document.getElementById("input_fields_ingridients");
 
-//console.log(inputValue);
+console.log(index);
 
 NewIngridientButton.addEventListener("click", function () {
   let newFields = document.createElement("div");
@@ -15,12 +15,16 @@ NewIngridientButton.addEventListener("click", function () {
   newFields.appendChild(CreateDeleteButton());
 
   wrapper.appendChild(newFields);
-  ++index;
+    ++index;
+    console.log(index);
+
 });
 
 function RemoveFields(element) {
   element.parentElement.remove();
-  --index;
+    --index;
+    console.log(index);
+
 }
 
 function CreateInputUnit(i) {
@@ -30,7 +34,7 @@ function CreateInputUnit(i) {
     inputField.setAttribute("placeholder", "Antal");
     inputField.setAttribute("min", "0");
     inputField.setAttribute("step", "0.01");
-    inputField.setAttribute("class", "form-control");
+    inputField.setAttribute("class", "form-control inputSmall");
 
 
   return inputField;
@@ -51,7 +55,7 @@ function CreateInputUnitType(i) {
   inputField.setAttribute("type", "text");
   inputField.setAttribute("name", `Ingredients[${i}].UnitType`);
     inputField.setAttribute("placeholder", "Enhet");
-    inputField.setAttribute("class", "form-control");
+    inputField.setAttribute("class", "form-control inputSmall");
 
 
   return inputField;
@@ -61,7 +65,7 @@ function CreateInputName(i) {
   inputField.setAttribute("type", "text");
   inputField.setAttribute("name", `Ingredients[${i}].Name`);
     inputField.setAttribute("placeholder", "Namn");
-    inputField.setAttribute("class", "form-control");
+    inputField.setAttribute("class", "form-control inputBig");
 
   return inputField;
 }

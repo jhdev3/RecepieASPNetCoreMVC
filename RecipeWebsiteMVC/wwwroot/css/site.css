@@ -72,3 +72,17 @@ ol > li::marker {
     background: linear-gradient(45deg, red, blue, green);
     opacity: 0.4;
 }
+
+
+span > input {
+    background: none;
+    padding: 0;
+    border: 0;
+}
+
+.inputSmall{
+    width: 25%;
+}
+.inputBig {
+    width: 50%;
+}

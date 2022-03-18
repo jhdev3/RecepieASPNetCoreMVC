@@ -24,9 +24,12 @@ namespace RecipeWebsiteMVC.Models
         //  [Range(0.01, 1000000.99)]
         // [RegularExpression(@"^\((?=.)([+-] ? ([0 - 9] *)(\.([0 - 9] +)) ?)\)$")]
         /*Lössningen en så länge var att ändra i kontrollpanelen region input för decimal till . istället för , */
-        [DisplayFormat(DataFormatString = "{0:0.0}")]
-        [Range(0, 9999999999.999999)]
+       // [DisplayFormat(DataFormatString = "{0:0.0}")]
+       //[Range(0, 9999999999.999999)]
+
+        [ValidateNever]
         public double? Unit { get; set; }
+        [ValidateNever]
         public string? UnitType { get; set; }
 
         [Required(ErrorMessage = "Namn/Underrubrik på Ingrdiens krävs")]

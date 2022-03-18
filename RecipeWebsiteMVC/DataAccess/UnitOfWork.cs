@@ -13,11 +13,14 @@ namespace RecipeWebsiteMVC.DataAccess
         //Det här är inget som bör ändras under livslängden för en databas operation.
         public IRecipeRepository Recipe { get; private set; }
 
+       // public IAppUserRepo User { get; private set; }
+
         public UnitOfWork(AppDbContext db) 
         {
             _db = db;
             Category = new CategoryRepository(_db);
             Recipe = new RecipeRepository(_db); 
+          //  User = new AppUserRepository(_db);
         }
 
         public void Save()

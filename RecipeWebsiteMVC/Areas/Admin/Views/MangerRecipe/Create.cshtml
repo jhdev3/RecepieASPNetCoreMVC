@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = $"{@ViewBag.CreateEdit} Recept";
 }
-
+<!--Till för Java Skripten ;)-->
 <input type="hidden" id="IngridientCount" value="@Model.Ingredients.Count"> 
 <input type="hidden" id="DirectionCount" value="@Model.Directions.Count">
 
@@ -14,11 +14,16 @@
 <div class="row">
     <form method="post" asp-action="@ViewBag.CreateEdit" enctype="multipart/form-data"> <!--Allow File Uploads like an Image-->
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-       <input type="submit" value="@ViewBag.CreateEdit" class="btn btn-primary" />
+
+     <div>
+            <a asp-action="Index" class="btn btn-outline-primary mr-2">Back to List</a>
+
+           <input type="submit" value="@ViewBag.CreateEdit" class="btn btn-outline-success" />
+    </div>
         <div class="container">
 
             <div class="row">
-                <div class="col-lg-4 col-md-8 col-sm-6">
+                <div class="col-lg-6 col-md-8 col-sm-6">
                         <label asp-for="Title" class="control-label"></label>
                         <input asp-for="Title" class="form-control" />
                         <span asp-validation-for="Title" class="text-danger"></span>
@@ -41,7 +46,7 @@
               
                     
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 mt-1">
+                <div class="col-lg-6 col-md-12 col-sm-12 mt-1">
 
                     <p class="control-label">Ingredienser</p>
                     @for (var i = 0; i < Model.Ingredients.Count; i++)
@@ -52,20 +57,26 @@
                         <input asp-for="@Model.Ingredients[i].UnitType" class="form-control" placeholder="Enhet" />
 
                         <input asp-for="@Model.Ingredients[i].Name" class="form-control" placeholder="Namn" />
+
                         <input asp-for="@Model.Ingredients[i].Id" type="hidden" /> <!--Viktigt För Edit-->
 
                         <input asp-for="@Model.Ingredients[i].DisplayOrder" type="hidden">
+                        <!--
                         <input type="button" value="Ta bort" class="btn btn-outline-danger mt-1" onclick="RemoveFields(this)" />
-
+                        -->
                     </div>
                     }
                  <span id="input_fields_ingridients"> </span>
+
                         <input type="button"
                                value="Lägg till ingridiens"
-                               class="btn btn-primary mt-1"
-                               id="NewIngridient" />
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 mt-1">
+                               id="NewIngridient" 
+                               class="btn btn-outline-success mt-1"/> 
+                 
+
+                 </div>
+                 <!--Enkel snabb style-->
+                <div class="col-lg-8 col-md-12 col-sm-12 mt-1">
                     <p class="control-label">Instruktioner</p>
 
                     @for (var i = 0; i < Model.Directions.Count; i++)
@@ -74,14 +85,17 @@
                             <textarea asp-for="Directions[i].Text" rows="2" class="form-control" placeholder="Instruktion"></textarea>
                             <input asp-for="Directions[i].Id" type="hidden" />
                             <input asp-for="Directions[i].DisplayOrder" type="hidden">
-                            <input type="button" value="Ta bort" class="btn btn-outline-danger float-right" onclick="RemoveFieldsDir(this)" />
+                            <!--
+                                <input type="button" value="Ta bort" class="btn btn-outline-danger float-right" onclick="RemoveFieldsDir(this)" />
+                            -->
                         </div>
                     }
                     
                         
                    
-                    <span id="NewFieldOutPut" class="col-lg-4 col-md-6 col-sm-6 mt-1" ></span>
-                    <input type="button" id="NewDirection" value="Lägg till instruktion" class="btn btn-primary mt-1" />
+                    <span id="NewFieldOutPut" class="col-lg-8 col-md-12 col-sm-12 mt-1" ></span>
+                    <input type="button" id="NewDirection" value="Lägg till instruktion" class="btn btn-outline-success mt-1"/> 
+
                 </div>
            </div>
              
@@ -90,9 +104,7 @@
     </form>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 <script src="~/js/NewIngrdientsField.js"></script>
 <script src="~/js/NewInstruktionField.js"></script>
 
