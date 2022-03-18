@@ -2,6 +2,10 @@ using RecipeWebsiteMVC.Data;
 using Microsoft.EntityFrameworkCore;
 using RecipeWebsiteMVC.DataAccess.Interfaces;
 using RecipeWebsiteMVC.DataAccess;
+using Microsoft.AspNetCore.Identity;
+using RecipeWebsiteMVC.Models.EmailSender;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using RecipeWebsiteMVC.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,10 +20,30 @@ builder.Services.AddControllers(options =>
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
         ));
-//Register ICategory :)
-//Ett request blir recived blir Scoped för det objekt. Bör vara försiktigt med trancient som skapar för varje tryck 
-//krävs bara 1 Inejection här men måste uppdatera IunitOfWork/UnitOfWork för varje tabell man vill använda där ;)
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//   .AddEntityFrameworkStores<AppDbContext>();
+
+//LÃ¤gger till mÃ¶jligheten att sÃ¤tta roler pÃ¥ User och anvÃ¤nda mig av de tabellerna som Identity framework tillhandahÃ¥ller :)
+//builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddDefaultTokenProviders() //AnvÃ¤nder Coutum Identity nu Token generas nÃ¤r man skapar sin user:)
+//    .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+           .AddEntityFrameworkStores<AppDbContext>()
+           .AddDefaultUI()
+           .AddDefaultTokenProviders();
+//builder.Services.AddDefaultIdentity<IdentityUser>()
+//  .AddEntityFrameworkStores<AppDbContext>();
+
+
+//Register IunitOfWork :)
+//Ett request blir recived blir Scoped fï¿½r det objekt. Bï¿½r vara fï¿½rsiktigt med trancient som skapar fï¿½r varje tryck 
+//krï¿½vs bara 1 Inejection hï¿½r men mï¿½ste uppdatera IunitOfWork/UnitOfWork fï¿½r varje tabell man vill anvï¿½nda dï¿½r ;)
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddSingleton<IEmailSender, FakeEmailSender>(); //NÃ¤r man overridar deafult
+//FÃ¶r att Slippa skapa alla Login och User saker sjÃ¤lv
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
+
 
 var app = builder.Build();
 
@@ -33,14 +57,21 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-//order of pipline är viktigt 
+//order of pipline ï¿½r viktigt 
 app.UseRouting();
+//Viktigt att det Ã¤r flre Authorization fÃ¶r man borde utfÃ¶r Authentication fÃ¶rst ;)
+
+app.UseAuthentication();
 
 app.UseAuthorization();
-//Hur Routing går dvs vilket pattern som används controller -> views -> dvs MVC Modelen:)
-//Det är även så URL blir uppdelad i när man använder MVC :)
+
+app.MapRazorPages();
+//Hur Routing gï¿½r dvs vilket pattern som anvï¿½nds controller -> views -> dvs MVC Modelen:)
+//Det ï¿½r ï¿½ven sï¿½ URL blir uppdelad i nï¿½r man anvï¿½nder MVC :)
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=User}/{controller=Home}/{action=Index}/{id?}");
+
+
 
 app.Run();

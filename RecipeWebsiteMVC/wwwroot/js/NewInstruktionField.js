@@ -2,6 +2,7 @@ let NewDirectionButton = document.getElementById("NewDirection");
 let indexDirection = document.getElementById("DirectionCount").value;
 
 let wrapperOut = document.getElementById("NewFieldOutPut");
+console.log(indexDirection);
 
 NewDirectionButton.addEventListener("click", function () {
     let newFields = document.createElement("div");
@@ -12,14 +13,18 @@ NewDirectionButton.addEventListener("click", function () {
     newFields.appendChild(CreateDeleteButtonDir());  
     wrapperOut.appendChild(newFields);
     ++indexDirection;
+    console.log(indexDirection);
+
 });
 function RemoveFieldsDir(element) {
     element.parentElement.remove();
     --indexDirection;
+    console.log(indexDirection);
+
 }
 function CreateInputDirectionText(i) {
     let inputField = document.createElement("TEXTAREA");
-    inputField.setAttribute("rows", "2");
+    inputField.setAttribute("rows", "3");
     inputField.setAttribute("name", `Directions[${i}].Text`);
     inputField.setAttribute("placeholder", "Instruktion");
     inputField.setAttribute("class", "form-control");

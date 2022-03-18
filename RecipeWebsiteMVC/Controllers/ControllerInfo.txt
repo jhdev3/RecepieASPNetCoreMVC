@@ -1,0 +1,9 @@
+Controllers är flyttad till Area med tillhörande View
+
+_Shard view är fortfarande samma.
+
+Den "nya" projekt designen ska underlätta.
+
+User , Admin Navigation och behörigheter etc :)
+
+Det trevliga är att det är bara länkarna som behöver ha asp-area och är de inte definierade inne lettar den efter Controllerns route först :)

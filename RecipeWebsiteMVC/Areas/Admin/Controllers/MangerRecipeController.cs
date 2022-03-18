@@ -5,10 +5,14 @@ using RecipeWebsiteMVC.Data;
 using RecipeWebsiteMVC.DataAccess.Interfaces;
 using RecipeWebsiteMVC.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Authorization;
+using RecipeWebsiteMVC.Models.UserRoles;
 
 //0176 grader tecknet
 namespace RecipeWebsiteMVC.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = $"{UR.Role_Admin}, {UR.Role_Contributor}")]
     public class MangerRecipeController : Controller
     {
         private readonly IUnitOfWork _UnitOfWork;
@@ -148,7 +152,7 @@ namespace RecipeWebsiteMVC.Controllers
 
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles = UR.Role_Admin)]
         //Get Confirmation Page for Delete
         public async Task<IActionResult> Delete(string id)
         {
@@ -171,6 +175,7 @@ namespace RecipeWebsiteMVC.Controllers
         // POST: ManagerCategories/Delete/
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken] //Prevent Cross site attacks 
+        [Authorize(Roles = UR.Role_Admin)]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
              var recipe = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id);

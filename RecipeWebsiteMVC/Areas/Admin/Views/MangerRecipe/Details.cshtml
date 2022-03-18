@@ -6,12 +6,15 @@
 
 <h1>Detaljer</h1>
 
-<div>
+
     <h4>Recept</h4>
                 
-    <a class="Details" id="@Model.Id" href="#"><h3 class="text-right">View</h3> 
+    <button class="Open-button" id="@Model.Id" href="#">
         
-    </a>
+        <h3 class="text-right">View</h3> 
+        
+    </button>
+
 
     <hr />
     <div>    
@@ -101,9 +104,19 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
-
-
 </div>
+<dialog class="partialViewModal" id="partialViewModal">
+    <div class="row text-end">    
+     <a href="#" class="" id="close-icon" >
+        <i class="bi bi-x-circle"></i>
+    </a>
+    </div>
+
+    <partial name="~/Areas/User/Views/Home/Details.cshtml" model="@Model" />
+    <button type="button" id="close-button" class="btn btn-dark">Close</button>
+</dialog>
+
+@*
      <div id="partialModal" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -119,7 +132,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
 
 
 
@@ -129,26 +142,47 @@
     
 
   <script type="text/javascript">
-        $(function () {
-            $(".Details").click(function () {
-                var Id = $(this).attr("id");
-                console.log(Id);
-                $.ajax({
-                    type: "GET",
-                    url: "/Home/Details",
-                    data: { "id": Id },
-                    success: function (response) {
-                        $("#partialModal").find(".modal-body").html(response);
-                        $("#partialModal").modal('show');
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
-                    }
-                });
-            });
+        //$(function () {
+        //    $(".Details").click(function () {
+        //        var Id = $(this).attr("id");
+        //        console.log(Id);
+        //        $.ajax({
+        //            type: "GET",
+        //            url: "/Home/Details",
+        //            data: { "id": Id },
+        //            success: function (response) {
+        //                $("#partialModal").find(".modal-body").html(response);
+        //                $("#partialModal").modal('show');
+        //            },
+        //            failure: function (response) {
+        //                alert(response.responseText);
+        //            },
+        //            error: function (response) {
+        //                alert(response.responseText);
+        //            }
+        //        });
+        //    });
+        //});
+        const modal = document.querySelector("#partialViewModal");
+        const openModal = document.querySelector(".Open-button");
+        const closeModal = document.querySelector("#close-button");
+        const closeModal2 = document.querySelector("#close-icon");
+                                console.log(closeModal);
+                                 console.log(closeModal2);
+
+        openModal.addEventListener("click", () =>{
+            modal.showModal();
+        });
+
+        closeModal.addEventListener("click", () =>{
+            console.log("Close");
+            modal.close();
+        });
+
+        closeModal2.addEventListener("click", () =>{
+                        console.log("Close");
+
+            modal.close();
         });
     </script>
 

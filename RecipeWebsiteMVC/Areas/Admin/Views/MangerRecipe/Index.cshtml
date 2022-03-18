@@ -1,16 +1,19 @@
-﻿@model IEnumerable<RecipeWebsiteMVC.Models.Recipe>
+﻿@using RecipeWebsiteMVC.Models.UserRoles
+@model IEnumerable<RecipeWebsiteMVC.Models.Recipe>
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <partial name="_notification" />
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="row pt-4">
+    <div class="col-6">
+        <h2 class="text-primary">Alla recept</h2>
+    </div>
+<div class="col-6 text-end">
+    <a asp-action="Create" class="btn btn-warning"><i class="bi bi-plus-square"></i> Create New</a>
+</div>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -45,9 +48,13 @@
                 @Html.DisplayFor(modelItem => item.EditedAt)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-dark"> <i class="bi bi-pencil-square"></i> Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"> <i class="bi bi-list-stars"></i> Details</a> 
+
+                @if(User.IsInRole(UR.Role_Admin))
+                {
+                  <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"> <i class="bi bi-trash"></i>  Delete</a>
+                }
             </td>
         </tr>
 }
