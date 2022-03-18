@@ -6,10 +6,7 @@
 /// </summary>
     public static class UR
     {
-        public enum Role
-        {
-            User, Contributor,  Admin
-        }
+       
         public const string Role_User = "User";
         public const string Role_Contributor = "Contributor";
         public const string Role_Admin = "Admin";

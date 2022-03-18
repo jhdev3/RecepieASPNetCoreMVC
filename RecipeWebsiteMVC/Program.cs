@@ -5,6 +5,7 @@ using RecipeWebsiteMVC.DataAccess;
 using Microsoft.AspNetCore.Identity;
 using RecipeWebsiteMVC.Models.EmailSender;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using RecipeWebsiteMVC.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,18 +20,26 @@ builder.Services.AddControllers(options =>
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
         ));
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<AppDbContext>();//Lägger till möjligheten att sätta roler på User och använda mig av de tabellerna som Identity framework tillhandahåller :)
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//   .AddEntityFrameworkStores<AppDbContext>();
+
+//Lägger till möjligheten att sätta roler på User och använda mig av de tabellerna som Identity framework tillhandahåller :)
+//builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddDefaultTokenProviders() //Använder Coutum Identity nu Token generas när man skapar sin user:)
 //    .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+           .AddEntityFrameworkStores<AppDbContext>()
+           .AddDefaultUI()
+           .AddDefaultTokenProviders();
 //builder.Services.AddDefaultIdentity<IdentityUser>()
-  //  .AddEntityFrameworkStores<AppDbContext>();
+//  .AddEntityFrameworkStores<AppDbContext>();
+
+
 //Register IunitOfWork :)
 //Ett request blir recived blir Scoped f�r det objekt. B�r vara f�rsiktigt med trancient som skapar f�r varje tryck 
 //kr�vs bara 1 Inejection h�r men m�ste uppdatera IunitOfWork/UnitOfWork f�r varje tabell man vill anv�nda d�r ;)
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-//builder.Services.AddSingleton<IEmailSender, FakeEmailSender>();
+builder.Services.AddSingleton<IEmailSender, FakeEmailSender>(); //När man overridar deafult
 //För att Slippa skapa alla Login och User saker själv
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
@@ -51,7 +60,9 @@ app.UseStaticFiles();
 //order of pipline �r viktigt 
 app.UseRouting();
 //Viktigt att det är flre Authorization för man borde utför Authentication först ;)
+
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapRazorPages();

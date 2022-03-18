@@ -8,7 +8,7 @@
     {
         ICategoryRepo Category { get; }
         IRecipeRepository Recipe { get; }
-       // IAppUserRepo User { get; }
+        IAppUserRepo User { get; }
 
 
         public Task SaveAsync();

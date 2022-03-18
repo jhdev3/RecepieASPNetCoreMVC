@@ -58,6 +58,9 @@ namespace RecipeWebsiteMVC.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+            [Display(Name = "Namn")]
+
+            public string Name;
         }
 
         private async Task LoadAsync(IdentityUser user)
@@ -69,7 +72,8 @@ namespace RecipeWebsiteMVC.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Name = userName,
             };
         }
 
