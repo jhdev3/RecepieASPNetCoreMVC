@@ -20,18 +20,14 @@ builder.Services.AddControllers(options =>
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
         ));
-//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//   .AddEntityFrameworkStores<AppDbContext>();
 
-//Lägger till möjligheten att sätta roler på User och använda mig av de tabellerna som Identity framework tillhandahåller :)
-//builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddDefaultTokenProviders() //Använder Coutum Identity nu Token generas när man skapar sin user:)
-//    .AddEntityFrameworkStores<AppDbContext>();
+//Vilja jag använda de fält som jag skapade överallt i appen bör jag ändra Identity till ApplicationUser och det överallt men det är på väldigt väldigt många ställen så
+//De ändringarna görs där jag behöver /vill ha Namn på användaren
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
            .AddEntityFrameworkStores<AppDbContext>()
            .AddDefaultUI()
            .AddDefaultTokenProviders();
-//builder.Services.AddDefaultIdentity<IdentityUser>()
-//  .AddEntityFrameworkStores<AppDbContext>();
+
 
 
 //Register IunitOfWork :)

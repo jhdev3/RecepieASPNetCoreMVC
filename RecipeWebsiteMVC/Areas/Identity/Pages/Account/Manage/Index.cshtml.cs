@@ -73,7 +73,7 @@ namespace RecipeWebsiteMVC.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
-                Name = userName,
+
             };
         }
 
