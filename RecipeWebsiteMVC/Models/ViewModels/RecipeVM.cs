@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RecipeWebsiteMVC.Models.UnitTypeConvert;
+using System.ComponentModel.DataAnnotations;
 
 namespace RecipeWebsiteMVC.Models.ViewModels
 {
@@ -37,7 +38,9 @@ namespace RecipeWebsiteMVC.Models.ViewModels
         /// </summary>
         public void UpdateIngridiens()
         {
-            if(recipe.Ingredients.Count > 0)
+            var unitTypeConvert = new UnitTypesCollection();
+
+            if (recipe.Ingredients.Count > 0)
             {
                 foreach(var ingridient in recipe.Ingredients)
                 {
@@ -45,7 +48,10 @@ namespace RecipeWebsiteMVC.Models.ViewModels
                     {
                         ingridient.Unit *= (double)(Multiplier / (double)recipe.Portions); 
 
-                        /*Todo Featuer Unit type converter också det blir många etc */
+                        /*Det är här aktuellt att ändra enhet-Skulle kunna göra utanför if satsen men det blir bara aktuellt om någon fyllt i recept på ett konstigt sätt */
+
+                        unitTypeConvert.Convert(ingridient);    
+
                     }
                 }  
             }
