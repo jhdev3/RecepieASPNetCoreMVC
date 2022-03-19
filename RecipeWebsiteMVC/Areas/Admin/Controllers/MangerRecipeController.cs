@@ -38,8 +38,6 @@ namespace RecipeWebsiteMVC.Controllers
         {
             Recipe r = new Recipe();    
             ViewBag.CreateEdit = "Create";
-            
-            
             return View(r);  
         }
         [HttpPost]  

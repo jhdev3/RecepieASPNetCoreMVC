@@ -16,7 +16,7 @@ namespace RecipeWebsiteMVC.Models
         public string? Image { get; set; }
 
         [Required]
-        [Range(1, 20, ErrorMessage = "Invalid input: {1}, Please enter a value between 1-20 ")]
+        [Range(1, 200, ErrorMessage = "Större än 0 och mindre än 200 :)")]
         public int Portions { get; set; }
 
 
