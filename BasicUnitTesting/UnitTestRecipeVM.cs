@@ -29,7 +29,7 @@ namespace BasicUnitTesting
         {
             //Arrange
             var r = new Recipe { Portions = 4, Ingredients = data};
-           RecipeVM rvm = new RecipeVM { Multiplier=multi, recipe=r};
+           RecipeVM rvm = new RecipeVM(r, multi);
 
             //Act
             rvm.UpdateIngridiens();

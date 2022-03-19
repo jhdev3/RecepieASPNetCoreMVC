@@ -17,63 +17,64 @@
         <div class="col-12 col-md-6 row align-content-center">
             <p class="card-text">@Model.recipe.Description</p>
         </div>
-     </div>
-              <!-- Fixa portions med drop down select skit   -->
-            <form asp-action="Details" class="container justify-content-md-center">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-             <div class="col-6 row ">
-                <div class="col-2">
-                    <label asp-for="Multiplier" class="control-label"></label>
-                   </div>
-              </div>
-                <div class="col-12 col-md-6 row">
-                 <div class="col-4 mt-1">
-                    <input asp-for="Multiplier" type="number" class="form-control" />
-                    <span asp-validation-for="Multiplier" class="text-danger"></span>
-                </div>
-                  <div class="col-2 mt-1">
-                    <input type="submit" value="Change" class="btn btn-sm btn-outline-success" />
-             </div>
-           </div>
+    </div>
+    <!-- Fixa portions med drop down select skit   -->
+    <form asp-action="Details" class="container justify-content-md-center">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-6 row ">
+            <div class="col-2">
+                <label asp-for="Multiplier" class="control-label"></label>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 row">
+            <div class="col-4 mt-1">
+                <input asp-for="Multiplier" type="number" class="form-control" />
+                <span asp-validation-for="Multiplier" class="text-danger"></span>
+            </div>
+            <div class="col-2 mt-1">
+                <input type="submit" value="Change" class="btn btn-sm btn-outline-success" />
+            </div>
+        </div>
 
-            </form>
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <ul>
-                   @foreach(var r in Model.recipe.Ingredients)
+    </form>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <ul>
+                @foreach (var r in Model.recipe.Ingredients)
+                {
+                    @if (r.Unit.HasValue && r.Unit > 0)
                     {
-                        @if(r.Unit.HasValue && r.Unit > 0)
-                        {
-                            <li> 
-                                <span class="ms-lg-auto">@String.Format("{0:0.0}", r.Unit)</span> <!--Avrundar här dvs sätter format till 0.0 här tror format i ingridients borde funka men aja  before the if i had this .HasValue ? String.Format("{0:0.0}", r.Unit) : " "-->
-                                <span>@r.UnitType </span>
-                                <span>@r.Name</span>
-                            </li>
-                        }
-                        else
-                        {
+                        <li>
+                            <span class="ms-lg-auto">@String.Format("{0:0.0}", r.Unit)</span> <!--Avrundar här dvs sätter format till 0.0 här tror format i ingridients borde funka men aja  before the if i had this .HasValue ? String.Format("{0:0.0}", r.Unit) : " "-->
+                    <span>@r.UnitType </span>
+                            <span>@r.Name</span>
+                        </li>
+                    }
+                    else
+                    {
                         <li class="no-bullet mt-1">
                             <h5>@r.Name</h5>
                         </li>
-                        }
                     }
-                </ul>                 
-             </div>
-                <div class="col-12 col-md-6 ">
-                <ol>
-                   @foreach(var d in Model.recipe.Directions)
-                    {
-                        <li>
-                            <p class="card-text">@d.Text</p>
-                        </li>
-                    }
-                </ol>                 
-             </div>
+                }
+            </ul>
         </div>
-    </div> 
+        <div class="col-12 col-md-6 ">
+            <ol>
+                @foreach (var d in Model.recipe.Directions)
+                {
+                    <li>
+                        <p class="card-text">@d.Text</p>
+                    </li>
+                }
+            </ol>
+        </div>
+    </div>
 </div>
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

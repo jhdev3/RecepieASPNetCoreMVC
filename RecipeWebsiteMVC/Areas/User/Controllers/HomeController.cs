@@ -31,7 +31,7 @@ namespace RecipeWebsiteMVC.Controllers
             {
                 return NotFound(id);
             }
-            RecipeVM rVM = new RecipeVM{ Multiplier = r.Portions, recipe = r};
+            RecipeVM rVM = new RecipeVM(r);
 
             bool isAjax = HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
             if (isAjax)
@@ -49,8 +49,8 @@ namespace RecipeWebsiteMVC.Controllers
             if (r == null)
             {
                 return NotFound(id);
-            }      
-            RecipeVM rVM = new RecipeVM { Multiplier = Multiplier, recipe = r };
+            }
+            RecipeVM rVM = new RecipeVM(r, Multiplier); 
             rVM.UpdateIngridiens(); 
             return View(rVM);
         }
