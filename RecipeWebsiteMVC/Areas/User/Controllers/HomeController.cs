@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RecipeWebsiteMVC.DataAccess.Interfaces;
 using RecipeWebsiteMVC.Models;
+using RecipeWebsiteMVC.Models.ViewModels;
 using System.Diagnostics;
 
 namespace RecipeWebsiteMVC.Controllers
@@ -25,13 +26,33 @@ namespace RecipeWebsiteMVC.Controllers
         public async Task<IActionResult> Details(string id)
         {
             Recipe r = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id);
+
+            if(r == null)
+            {
+                return NotFound(id);
+            }
+            RecipeVM rVM = new RecipeVM{ Multiplier = r.Portions, recipe = r};
+
             bool isAjax = HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
             if (isAjax)
             {
-                return PartialView("Details", r);
+                return PartialView("Details", rVM);
             }
 
-            return View(r);
+            return View(rVM);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]  
+        public async Task<IActionResult> Details(string id, int Multiplier)
+        {
+            Recipe r = await _UnitOfWork.Recipe.GetDirectionsAndIngredients(id);
+            if (r == null)
+            {
+                return NotFound(id);
+            }      
+            RecipeVM rVM = new RecipeVM { Multiplier = Multiplier, recipe = r };
+            rVM.UpdateIngridiens(); 
+            return View(rVM);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
