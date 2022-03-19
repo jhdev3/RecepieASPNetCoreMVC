@@ -86,3 +86,7 @@ span > input {
 .inputBig {
     width: 50%;
 }
+
+.no-bullet {
+    list-style-type: none;
+}
