@@ -12,7 +12,7 @@ namespace RecipeWebsiteMVC.ViewComponents
     public class AddToMyListViewComponent : ViewComponent
     {
         private readonly IUnitOfWork _UnitOfWork;
-        public AddToMyListViewComponent(IUnitOfWork context) //Setting to null only so i dont need to moq this in tests 
+        public AddToMyListViewComponent(IUnitOfWork context) 
         {
             _UnitOfWork = context;
         }

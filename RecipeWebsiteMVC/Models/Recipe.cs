@@ -29,7 +29,7 @@ namespace RecipeWebsiteMVC.Models
         //Kan också sätt lazyloading till false för AppDbContext
         public IList<Direction> Directions { get; set; }
         public IList<Ingredient> Ingredients { get; set; }
-
+        [Display(Name = "Updaterad")]
         public DateTime? EditedAt { get; set; }
 
         public Recipe()

@@ -1,0 +1,25 @@
+﻿@using RecipeWebsiteMVC.Models.UserRoles;
+
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"> 
+        <i class="bi bi-gear"></i>
+        Content Managment</a>
+    <div class="dropdown-menu">
+
+        <a class="dropdown-item" asp-area="User" asp-controller="UserRecipeList" asp-action="Index">Min Lista</a>
+       
+        @if(User.IsInRole(UR.Role_Admin) || User.IsInRole(UR.Role_Contributor))
+        {
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" asp-area="Admin" asp-controller="MangerRecipe" asp-action="Index">Recept</a>
+        }
+        @if(User.IsInRole(UR.Role_Admin))
+        {
+        <a class="dropdown-item" asp-area="Admin" asp-controller="ManagerCategories" asp-action="Index">Kategorier</a>
+        }
+
+    </div>
+</li>
+
+
+
