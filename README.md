@@ -11,13 +11,14 @@ Svårast och som kanske är löst är Modelstat med att tillåta double, har en 
 Nationella inställningar.
 
 
-Små saker som jag velat få med men inte han med: 
-                                          -Lista alla recept i kategori på startsidan under varandra som det är nu fast fler rader. Tips lägg till mer än 5 recept för att                                             se hur sliden funger :) Aja inget märkvärdigt det är som Netflix streamingtjänsterna etc en horisontel scrolling. 
-                                           Denna feature räknar jag ta max 1h inget svårt har det mesta för det måsta bara skapa en ytterliggare VM och hämta recpten                                               efter kategori det enklaste och snyggaste är att göra det med ViewComponents tycker jag då det bara handlar om att hämta från                                              databas. 
+Små saker som jag velat få med men inte han med:	
 
-                                          -Lägga till lite flera UnitTypeConverters det som tar lite tid där är att göra tests för varje osv samt skapa recept och testa                                              med ;)
-                                          
-                                          -Lägga till lite Inställningar och UserMangment för Admin samt kanske bild på användaren m.m
+
+1. Lista alla recept i kategori på startsidan under varandra som det är nu fast fler rader. Tips lägg till mer än 5 recept för  att se hur sliden funger :) Aja inget märkvärdigt det är som Netflix streamingtjänsterna etc en horisontel scrolling. 
+Denna feature räknar jag ta max 1h inget svårt har det mesta för det måsta bara skapa en ytterliggare VM och hämta recpten                                             efter kategori det enklaste och snyggaste är att göra det med ViewComponents tycker jag då det bara handlar om att hämta från databas. 
+
+ 2. Lägga till lite flera UnitTypeConverters det som tar lite tid där är att göra tests för varje osv samt skapa recept och testa                                              med ;)
+ 3. Lägga till lite Inställningar och UserMangment för Admin samt kanske bild på användaren m.m
                                          
                                          
 En stor sak som inte hans med var att lägga till en sorts inköplista för ingridienser där man lägger till recept och summer lägger ihop vad man behöver köpa, samt ett enkelt sätt att ta bort det man redan har hemma m.m. Att gör den grejen öppnar då upp för lite andra roliga features som att exportera till olika format för att lägg in i text google/android inköpslista eller skicka till sin mail i ett snygg format. 
