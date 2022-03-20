@@ -37,6 +37,12 @@ namespace RecipeWebsiteMVC.DataAccess
         {
             return await dbSet.ToListAsync();
         }
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
+        {
+            IQueryable<T> query = dbSet;
+            query = query.Where(predicate);
+            return await query.ToListAsync();
+        }
         /// <summary>
         /// Possible null reference return
         /// </summary>

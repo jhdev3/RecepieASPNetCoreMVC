@@ -26,6 +26,8 @@ namespace RecipeWebsiteMVC.DataAccess.Interfaces
         /// <returns></returns>
         Task<T> GetAsync(string id);
         Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate);//overloading to accept a predicate
+
         /// <summary>
         /// Find returns Null if not found, Good instead of Find can be used for other tabels not just ID
         /// </summary>

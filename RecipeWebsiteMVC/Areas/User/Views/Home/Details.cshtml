@@ -15,10 +15,12 @@
             <img class="img-thumbnail img-extra" src="~/@Model.recipe.Image" alt="@Model.recipe.Title picture" />
         </div>
         <div class="col-12 col-md-6 row align-content-center">
-            <p class="card-text">@Model.recipe.Description</p>
+            <p class="card-text">@Model.recipe.Description</p>        
+            <a asp-action="AddToList" asp-route-RecipeId="@Model.recipe.Id" class="btn btn-sm btn-success"><i class="bi bi-plus-square-fill"></i>Min lista</a>
         </div>
     </div>
-    <!-- Fixa portions med drop down select skit   -->
+
+    <!-- Skulle kunna vara drop down select men lite mer jobb med det   -->
     <form asp-action="Details" class="container justify-content-md-center">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="col-6 row ">
