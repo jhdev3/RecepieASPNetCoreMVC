@@ -1,4 +1,6 @@
-﻿@model RecipeWebsiteMVC.Models.Recipe
+﻿@using RecipeWebsiteMVC.Models.UserRoles
+
+@model RecipeWebsiteMVC.Models.Recipe
 @{
     ViewData["Title"] = $"{@ViewBag.CreateEdit} Recept";
 }
@@ -36,7 +38,7 @@
 			            <select asp-for="Category" asp-items="@ViewBag.SelectCategory" class="form-select">
 				        <option disabled selected>--Select Category--</option>
 			            </select>
-                     >
+                     
 
                         <label asp-for="Portions" class="control-label"></label>
                         <input asp-for="Portions" class="form-control" />
@@ -61,10 +63,24 @@
 
                         <input asp-for="@Model.Ingredients[i].Id" type="hidden" /> <!--Viktigt För Edit-->
 
-                        <input asp-for="@Model.Ingredients[i].DisplayOrder" type="hidden">
-                        <!--
-                        <input type="button" value="Ta bort" class="btn btn-outline-danger mt-1" onclick="RemoveFields(this)" />
-                        -->
+                        <input asp-for="@Model.Ingredients[i].DisplayOrder" type="hidden" /> <!--Viktigt För Edit-->
+
+
+                           
+                                @if (Model.Ingredients[i].Id != null)
+                                {
+                                    if(User.IsInRole(UR.Role_Admin))  
+                                    {
+                                     <!--Viktigt Ta Bort är känsligt bara admin får göra det för just nu Tar man bort försvinner det man tidager Har Edit-->
+                                     <a asp-area="Admin" asp-controller="MangerRecipe" asp-action="DeleteIngrident" asp-route-id="@Model.Ingredients[i].Id" class="btn btn-sm btn-outline-danger mr-2"><i class="bi bi-trash"></i> </a>
+                                    }
+                                }
+                                else
+                                {
+                                    <input type="button" value="Ta bort" class="btn btn-outline-danger mt-1" onclick="RemoveFields(this)" />
+                                }
+                            
+
                     </div>
                     }
                  <span id="input_fields_ingridients"> </span>
@@ -85,10 +101,20 @@
                         <div class="form-group d-flex align-items-end mt-1"> 
                             <textarea asp-for="Directions[i].Text" rows="2" class="form-control" placeholder="Instruktion"></textarea>
                             <input asp-for="Directions[i].Id" type="hidden" />
-                            <input asp-for="Directions[i].DisplayOrder" type="hidden">
-                            <!--
-                                <input type="button" value="Ta bort" class="btn btn-outline-danger float-right" onclick="RemoveFieldsDir(this)" />
-                            -->
+                            <input asp-for="Directions[i].DisplayOrder" type="hidden" />
+
+
+                                 @if (Model.Directions[i].Id != null)
+                                {
+                                    if(User.IsInRole(UR.Role_Admin)) 
+                                    {
+                                     <a asp-area="Admin" asp-controller="MangerRecipe" asp-action="DeleteDirection" asp-route-id="@Model.Directions[i].Id" class="btn btn-sm btn-outline-danger mr-2"><i class="bi bi-trash"></i> </a>
+                                    }
+                                }
+                                else
+                                {
+                                     <input type="button" value="Ta bort" class="btn btn-outline-danger float-right" onclick="RemoveFieldsDir(this)" />
+                                }
                         </div>
                     }
                     

@@ -11,12 +11,16 @@ namespace RecipeWebsiteMVC.Models
     {
         [Required]
         public string Title { get; set; }
+        [Display(Name = "Beskriving")]
         public string? Description { get; set; }
+        [Display(Name = "Kategori")]
         public string? Category { get; set; } //En sträng och inte ett Category objekt här vill jag inte skapa någon relation på så sätt att de skapas extra tabeller i databasen. Tanken här är att hämta det som matchar kategrion i den columnen i tabellen.
+        [Display(Name = "Bild")]
         public string? Image { get; set; }
 
         [Required]
         [Range(1, 200, ErrorMessage = "Större än 0 och mindre än 200 :)")]
+        [Display(Name = "Portioner")]
         public int Portions { get; set; }
 
 

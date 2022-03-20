@@ -1,54 +1,47 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using RecipeWebsiteMVC.Models.ViewModels
-@model RecipeVM
-@inject SignInManager<IdentityUser> SignInManager
+﻿@model RecipeWebsiteMVC.Models.Recipe
 
 
 
 <div class="card container pt-4">
     <div class="card-header bg-primary ms-lg-0 row">
         <div class="col-12 col-md-6">
-            <h1 class="text-light">@Model.recipe.Title</h1>
+            <h1 class="text-light">@Model.Title</h1>
         </div>
         <div class="col-12 col-md-6 text-end pt-4">
-            <span class="badge bg-info pt-2"> @Model.recipe.Category </span>
+            <span class="badge bg-info pt-2"> @Model.Category </span>
         </div>
     </div>
     <div class="card-body container row">
         <div class="col-12 col-md-6">
-            <img class="img-thumbnail img-extra" src="~/@Model.recipe.Image" alt="@Model.recipe.Title picture" />
+            <img class="img-thumbnail img-extra" src="~/@Model.Image" alt="@Model.Title picture" />
         </div>
         <div class="col-12 col-md-6 row align-content-center">
-            <p class="card-text">@Model.recipe.Description</p>        
+            <p class="card-text">@Model.Description</p>        
             <!-- placera ViewCOmponent-->
-            @if (SignInManager.IsSignedIn(User))
-            {
-                @await Component.InvokeAsync("AddToMyList", new { RecipeID = Model.recipe.Id})
-            }
+         
         </div>
     </div>
     <!-- Skulle kunna vara drop down select men lite mer jobb med det   -->
-    <form asp-action="Details" class="container justify-content-md-center">
+    <div class="container justify-content-md-center">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="col-6 row ">
             <div class="col-2">
-                <label asp-for="Multiplier" class="control-label"></label>
+                <label asp-for="Portions" class="control-label"></label>
             </div>
         </div>
         <div class="col-12 col-md-6 row">
             <div class="col-4 mt-1">
-                <input asp-for="Multiplier" type="number" class="form-control" />
-                <span asp-validation-for="Multiplier" class="text-danger"></span>
+                <input asp-for="Portions" type="number" class="form-control" disabled/>
             </div>
             <div class="col-2 mt-1">
-                <input type="submit" value="Change" class="btn btn-sm btn-outline-success" />
+                <input type="submit" value="Change" class="btn btn-sm btn-outline-success" disabled/>
             </div>
         </div>
-    </form>
+    </div>
     <div class="row">
         <div class="col-12 col-md-6">
             <ul>
-                @foreach (var r in Model.recipe.Ingredients)
+                @foreach (var r in Model.Ingredients)
                 {
                     @if (r.Unit.HasValue && r.Unit > 0)
                     {
@@ -69,7 +62,7 @@
         </div>
         <div class="col-12 col-md-6 ">
             <ol>
-                @foreach (var d in Model.recipe.Directions)
+                @foreach (var d in Model.Directions)
                 {
                     <li>
                         <p class="card-text">@d.Text</p>

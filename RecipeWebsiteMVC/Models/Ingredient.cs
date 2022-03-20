@@ -25,7 +25,7 @@ namespace RecipeWebsiteMVC.Models
         // [RegularExpression(@"^\((?=.)([+-] ? ([0 - 9] *)(\.([0 - 9] +)) ?)\)$")]
         /*Lössningen en så länge var att ändra i kontrollpanelen region input för decimal till . istället för , */
            
-        [Range(0, 9999999999.999999)]    
+        [Range(0, 9999999999.999999, ErrorMessage = "Fel Format, Godkända format 1 eller 1.5 inte 1,5")]
         public double? Unit { get; set; }
         public string? UnitType { get; set; }
 

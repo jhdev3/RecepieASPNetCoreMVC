@@ -11,7 +11,6 @@ NewIngridientButton.addEventListener("click", function () {
   newFields.appendChild(CreateInputUnit(index));
   newFields.appendChild(CreateInputUnitType(index));
   newFields.appendChild(CreateInputName(index));
-  newFields.appendChild(CreateIngridientDisplayOrder(index));
   newFields.appendChild(CreateDeleteButton());
 
   wrapper.appendChild(newFields);
@@ -38,15 +37,6 @@ function CreateInputUnit(i) {
 
 
   return inputField;
-}
-
-function CreateIngridientDisplayOrder(i) {
-    let inputField = document.createElement("input");
-    inputField.setAttribute("type", "number");
-    inputField.setAttribute("name", `Ingredients[${i}].DisplayOrder`);
-    inputField.setAttribute("value", `${i}`);
-    inputField.setAttribute("style", "display: none");
-    return inputField;
 }
 
 

@@ -4,7 +4,8 @@ namespace RecipeWebsiteMVC.Models
 {
     public class Category : BaseEntity
     {
-        [Required]
+        [Required(ErrorMessage ="Fält får inte vara tomt")]
+        [Display(Name = "Kategori titel")]
         public string Name { get; set; }
         public DateTime? EditedAt { get; set; }
 

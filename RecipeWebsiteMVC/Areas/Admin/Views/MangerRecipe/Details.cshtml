@@ -10,15 +10,10 @@
 
 
     <h4>Recept</h4>
-                
-    <button class="Open-button" id="@Model.Id" href="#">
-        
-        <h3 class="text-right">View</h3> 
-        
-    </button>
-
-
-    <hr />
+    <div class="d-flex justify-content-end">           
+        <div class="col-2">  <a class="text-right btn btn-outline-success" id="Open-button"> <i class="bi bi-postcard-heart"></i> Visa recept </a> </div>
+    </div> 
+    <hr/>
     <div>    
     <dl class="row">
         <dt class = "col-sm-2">
@@ -116,7 +111,7 @@
 
   @* -För view Updatera ingridiens är inte designad för att fungera här det är ett hack till partial view och inte till controllern-*@
 
-    <partial name="~/Areas/User/Views/Home/Details.cshtml" model="new RecipeVM(Model)" />
+    <partial name="~/Views/Shared/_RecipeDetailsView.cshtml" model="Model" />
     
     <button type="button" id="close-button" class="btn btn-dark">Close</button>
 
@@ -132,29 +127,9 @@
     
 
   <script type="text/javascript">
-        //$(function () {
-        //    $(".Details").click(function () {
-        //        var Id = $(this).attr("id");
-        //        console.log(Id);
-        //        $.ajax({
-        //            type: "GET",
-        //            url: "/Home/Details",
-        //            data: { "id": Id },
-        //            success: function (response) {
-        //                $("#partialModal").find(".modal-body").html(response);
-        //                $("#partialModal").modal('show');
-        //            },
-        //            failure: function (response) {
-        //                alert(response.responseText);
-        //            },
-        //            error: function (response) {
-        //                alert(response.responseText);
-        //            }
-        //        });
-        //    });
-        //});
+   
         const modal = document.querySelector("#partialViewModal");
-        const openModal = document.querySelector(".Open-button");
+        const openModal = document.querySelector("#Open-button");
         const closeModal = document.querySelector("#close-button");
         const closeModal2 = document.querySelector("#close-icon");
                                 console.log(closeModal);

@@ -46,7 +46,7 @@ namespace RecipeWebsiteMVC.Controllers
         [ValidateAntiForgeryToken]  
         public async Task<IActionResult> Create(Recipe recipe, IFormFile? file = null) //Made it null to not mess with my tests 
         {
-
+            //Sätter Ordining Utifrån den ordiningen de skapas i alternativ här är att sätta eget input Field och sätta själv
             if (!ModelState.IsValid)
             {   
   
@@ -67,6 +67,8 @@ namespace RecipeWebsiteMVC.Controllers
                 }
                 recipe.Image = @"Images\FakeBlobStorage\" + fileName + extension; //Eftersom jag spara filen i root skulle jag spara I ett riktigt blobstorage bör det vara upload+filename +extension
             }
+
+            setOrder(recipe);
             _UnitOfWork.Recipe.Add(recipe); 
             await _UnitOfWork.SaveAsync();//UnitOfWork :)
             TempData["Success"] = $"Lyckades skapa : {recipe.Title} :)";
@@ -115,11 +117,12 @@ namespace RecipeWebsiteMVC.Controllers
         {
             //Säkerhet för att inte manipulera Id och ändra på något annat
             //Bör vara samma då det används för att komma till Edit sidan.
-            if(id != recipe.Id)
+
+            if (id != recipe.Id)
             {
                 return NotFound(id);
             }
-            
+
 
             if (!ModelState.IsValid)
             {
@@ -143,6 +146,8 @@ namespace RecipeWebsiteMVC.Controllers
                 recipe.Image = @"Images\FakeBlobStorage\" + fileName + extension; //Eftersom jag spara filen i root skulle jag spara I ett riktigt blobstorage bör det vara upload+filename +extension
             }
 
+
+            setOrder(recipe);
             _UnitOfWork.Recipe.Update(recipe);
             //Mindre sanolikt här att det uppkommer för att update fungerar lite anorlunda än Kategorin men det skulle kunna hända så bättre att vara safe :)
             try
@@ -158,6 +163,8 @@ namespace RecipeWebsiteMVC.Controllers
 
             return RedirectToAction("Index");
         }
+
+
         [Authorize(Roles = UR.Role_Admin)]
         //Get Confirmation Page for Delete
         public async Task<IActionResult> Delete(string id)
@@ -197,6 +204,38 @@ namespace RecipeWebsiteMVC.Controllers
 
             return RedirectToAction("Index");
         }
+        [Authorize(Roles = UR.Role_Admin)]
+        public async Task<IActionResult> DeleteIngrident(string id)
+        {
+            var ingrident = await _UnitOfWork.Ingredient.GetAsync(id);
+
+            if (ingrident == null)//säkerhet
+            {
+                return NotFound(id);
+            }
+
+            _UnitOfWork.Ingredient.Remove(ingrident);
+            await _UnitOfWork.SaveAsync();
+            TempData["Success"] = $"Lyckades ta bort Ingrdiens";
+            return RedirectToAction("Index");
+
+        }
+        [Authorize(Roles = UR.Role_Admin)]
+        public async Task<IActionResult> DeleteDirection(string id)
+        {
+            var direction = await _UnitOfWork.Direction.GetAsync(id);
+
+            if (direction == null)//säkerhet
+            {
+                return NotFound(id);
+            }
+
+                _UnitOfWork.Direction.Remove(direction);
+                await _UnitOfWork.SaveAsync();
+                TempData["Success"] = $"Lyckades ta bort Instruktionen";
+            return RedirectToAction("Index"); //Sickar tillbaka till start sidan eftersom det är känsligt att ta bort samt flera som ändrar / tar bort i recept kan det uppstå många concurrency så att göra det ett i taget kan undvika lite fel
+
+        }
 
 
 
@@ -213,6 +252,18 @@ namespace RecipeWebsiteMVC.Controllers
             });
             return selctListitems;  
         } 
+
+        private void setOrder(Recipe recipe)
+        {
+            for (int i = 0; i < recipe.Ingredients.Count; i++)
+            {
+                recipe.Ingredients[i].DisplayOrder = i;
+            }
+            for (int i = 0; i < recipe.Directions.Count; i++)
+            {
+                recipe.Directions[i].DisplayOrder = i;
+            }
+        }
         #endregion
     }
 }
