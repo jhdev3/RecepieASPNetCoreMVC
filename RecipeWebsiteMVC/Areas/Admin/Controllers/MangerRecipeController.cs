@@ -7,6 +7,7 @@ using RecipeWebsiteMVC.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Authorization;
 using RecipeWebsiteMVC.Models.UserRoles;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 //0176 grader tecknet
 namespace RecipeWebsiteMVC.Controllers
@@ -34,10 +35,11 @@ namespace RecipeWebsiteMVC.Controllers
             return View(recipies);
         }
         //Get - Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
             Recipe r = new Recipe();    
             ViewBag.CreateEdit = "Create";
+            ViewBag.SelectCategory = await CategoryListAsync();
             return View(r);  
         }
         [HttpPost]  
@@ -49,7 +51,9 @@ namespace RecipeWebsiteMVC.Controllers
             {   
   
                 //Typ av View istället för att copy pasta och hålla på att trixa med 2 views som i princip är Lika
-                ViewBag.CreateEdit = "Create"; 
+                ViewBag.CreateEdit = "Create";
+                ViewBag.SelectCategory = await CategoryListAsync();
+
                 return View(recipe);  
             }
             if(file != null) { //Should always be null in the tests
@@ -99,6 +103,8 @@ namespace RecipeWebsiteMVC.Controllers
            
          
             ViewBag.CreateEdit = "Edit";//Typ av View
+            ViewBag.SelectCategory = await CategoryListAsync();
+
 
             return View("Create", recipe);//Slipper Göra 2 Typ lika  views
         }
@@ -119,6 +125,8 @@ namespace RecipeWebsiteMVC.Controllers
             {
             
                 ViewBag.CreateEdit = "Edit";
+                ViewBag.SelectCategory = await CategoryListAsync();
+
                 return View("Create", recipe);
             }
             //File
@@ -189,5 +197,22 @@ namespace RecipeWebsiteMVC.Controllers
 
             return RedirectToAction("Index");
         }
+
+
+
+        #region private functions
+        //Skulle kunna göra en RecipeVM osv istället för viewBag för att få ListItems gör så här istället
+        private async Task<IEnumerable<SelectListItem>> CategoryListAsync()
+        {
+            var Categories = await _UnitOfWork.Category.GetAllAsync();
+            
+            var selctListitems = Categories.Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Name //Väljer Name och inte Id för borde inte finnas fler categorier med samma namn Samt sätt name som Key i databasen men då can jag få Concurrency errors även när jag lägger till Kategori det vill jag inte ha
+            });
+            return selctListitems;  
+        } 
+        #endregion
     }
 }

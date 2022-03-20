@@ -52,6 +52,13 @@ namespace RecipeWebsiteMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Todo Not add if Name already exist.
+                var test = await _UnitOfWork.Category.GetFirstOrDefaultAsync(u => u.Name == category.Name);
+                if (test != null)
+                {
+                    TempData["Error"] = $"Kategorin: {category.Name} finns redan";
+                    return RedirectToAction(nameof(Index));
+                }
                 _UnitOfWork.Category.Add(category);
                 await _UnitOfWork.SaveAsync();
 

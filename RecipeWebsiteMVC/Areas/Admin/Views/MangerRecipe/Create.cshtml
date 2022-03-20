@@ -30,12 +30,13 @@
                    
                         <label asp-for="Description" class="control-label"></label>
                         <textarea asp-for="Description" rows="3" class="form-control"></textarea> 
-                        <span asp-validation-for="Description" class="text-danger"></span>
                   
 
-                        <label asp-for="Category" class="control-label"></label>
-                        <input asp-for="Category" class="form-control" />
-                        <span asp-validation-for="Category" class="text-danger"></span>
+                      <label asp-for="Category"></label>
+			            <select asp-for="Category" asp-items="@ViewBag.SelectCategory" class="form-select">
+				        <option disabled selected>--Select Category--</option>
+			            </select>
+                     >
 
                         <label asp-for="Portions" class="control-label"></label>
                         <input asp-for="Portions" class="form-control" />
