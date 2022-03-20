@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<Recipe>
 
+    <partial name="_notification" />
+
 
 <div class="row pb-3">
     @foreach (var recipe in Model)
@@ -17,8 +19,11 @@
                         </div>
                     </div>
                     <div>
-                        <a asp-area="User" asp-controller="Home" asp-action="Details" class="btn btn-primary form-control" asp-route-id="@recipe.Id">
+                        <a asp-area="User" asp-controller="Home" asp-action="Details" class="btn btn-sm btn-primary" asp-route-id="@recipe.Id">
                             Details
+                        </a>
+                         <a asp-action="Delete" class="btn btn-sm btn-danger" asp-route-RecipieID="@recipe.Id">
+                            Delete
                         </a>
                     </div>
                 </div>

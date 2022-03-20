@@ -1,5 +1,9 @@
-﻿@using RecipeWebsiteMVC.Models.ViewModels
+﻿@using Microsoft.AspNetCore.Identity
+@using RecipeWebsiteMVC.Models.ViewModels
 @model RecipeVM
+@inject SignInManager<IdentityUser> SignInManager
+
+
 
 <div class="card container pt-4">
     <div class="card-header bg-primary ms-lg-0 row">
@@ -16,7 +20,13 @@
         </div>
         <div class="col-12 col-md-6 row align-content-center">
             <p class="card-text">@Model.recipe.Description</p>        
-            <a asp-action="AddToList" asp-route-RecipeId="@Model.recipe.Id" class="btn btn-sm btn-success"><i class="bi bi-plus-square-fill"></i>Min lista</a>
+            <!-- placera ViewCOmponent-->
+            @if (SignInManager.IsSignedIn(User))
+            {
+                @await Component.InvokeAsync("AddToMyList", new { RecipeID = Model.recipe.Id})
+            }
+
+<ul class="navbar-nav">
         </div>
     </div>
 
