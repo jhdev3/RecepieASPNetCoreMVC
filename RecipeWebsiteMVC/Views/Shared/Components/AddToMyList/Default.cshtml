@@ -1,0 +1,13 @@
+﻿@model RecipeWebsiteMVC.Models.ViewModels.AlreadyInListVM
+
+@if (Model.IsInList)
+{
+   /*Möjlighet att ta bort från lista med toggel ? */
+    <p class="text-muted"><i class="bi bi-check-circle"></i> I min lista</p>
+
+}
+else
+{
+    <div class="col-5"> <a asp-action="AddToList" asp-route-RecipeId="@Model.recipeID" class="text-success"><i class="bi bi-plus-square-fill"></i> Lägg till i Min lista</a> </div>
+
+}

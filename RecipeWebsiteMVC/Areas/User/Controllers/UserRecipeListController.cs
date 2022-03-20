@@ -27,5 +27,27 @@ namespace RecipeWebsiteMVC.Areas.User.Controllers
             var recipes = await _UnitOfWork.UserFavoritRecipe.GetAllRecipesForUser(claim.Value);
             return View(recipes);
         }
+
+        public async Task<IActionResult> Delete(string RecipieID)
+        {
+            var getIdentity = (ClaimsIdentity)User.Identity;
+            var claim = getIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            //Borde inte kunna vara noll medtanke på Authorize men men då sickar vi bara tillbaka dig
+            if (claim == null)
+            {
+                return NotFound();
+            }
+            var listItem = await _UnitOfWork.UserFavoritRecipe.GetFirstOrDefaultAsync(x => x.ApplicationUserID == claim.Value && x.RecipeID == RecipieID);
+            if (listItem == null)
+            {
+                TempData["Error"] = "Gick inte ta bort receptet från min lista"; 
+                return RedirectToAction("Index");
+            }
+
+            _UnitOfWork.UserFavoritRecipe.Remove(listItem);
+            await _UnitOfWork.SaveAsync();
+            TempData["Success"] = $"Tog bort receptet från Min lista";
+            return RedirectToAction("Index");
+        }
     }
 }
