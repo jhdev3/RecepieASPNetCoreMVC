@@ -19,6 +19,8 @@ namespace RecipeWebsiteMVC.Data
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Direction> Directions { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }   
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }          
+        public DbSet<UserFavoriteRecipe> userFavoriteRecipes { get; set; }  
+
     }
 }

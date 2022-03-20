@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RecipeWebsiteMVC.DataAccess.Interfaces;
 using RecipeWebsiteMVC.Models;
 using RecipeWebsiteMVC.Models.ViewModels;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace RecipeWebsiteMVC.Controllers
 {
@@ -54,6 +56,32 @@ namespace RecipeWebsiteMVC.Controllers
             rVM.UpdateIngridiens(); 
             return View(rVM);
         }
+
+        [Authorize]
+        public async Task<IActionResult> AddToListAsync(string RecipeId)
+        {
+            var getIdentity = (ClaimsIdentity)User.Identity;
+            var claim = getIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            //Borde inte kunna vara noll medtanke på Authorize men men då sickar vi bara tillbaka dig
+            if (claim == null)
+            {
+                return RedirectToAction("Details", new { id = RecipeId });
+            }
+
+            var test = await _UnitOfWork.UserFavoritRecipe.GetFirstOrDefaultAsync(u => u.ApplicationUserID == claim.Value && u.RecipeID == RecipeId);
+            if(test == null) { 
+                UserFavoriteRecipe UserFR = new UserFavoriteRecipe
+                {
+                    RecipeID = RecipeId,
+                    ApplicationUserID = claim.Value
+                };
+                _UnitOfWork.UserFavoritRecipe.Add(UserFR);
+                _UnitOfWork.Save();
+            }
+
+            return RedirectToAction("Details", new { id = RecipeId });
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

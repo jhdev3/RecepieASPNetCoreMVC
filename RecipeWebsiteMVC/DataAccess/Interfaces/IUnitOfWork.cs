@@ -9,6 +9,7 @@
         ICategoryRepo Category { get; }
         IRecipeRepository Recipe { get; }
         IAppUserRepo User { get; }
+        IAppUserFavoritRecipeRepo UserFavoritRecipe { get; }
 
 
         public Task SaveAsync();
