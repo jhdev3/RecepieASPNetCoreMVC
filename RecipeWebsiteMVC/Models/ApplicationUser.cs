@@ -13,6 +13,7 @@ namespace RecipeWebsiteMVC.Models
     public class ApplicationUser : IdentityUser
     {
         [Required]
+        [Display(Name = "Namn")]
         public string Name { get; set; }    
         public DateTime CreatedAt { get; set; }    
     }

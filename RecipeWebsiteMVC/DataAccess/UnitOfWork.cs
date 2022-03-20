@@ -15,6 +15,8 @@ namespace RecipeWebsiteMVC.DataAccess
         public IRecipeRepository Recipe { get; private set; }
         public IAppUserRepo User { get; private set; }
 
+        public IdirectionRepo Direction { get; private set; }
+        public IingredientRepo Ingredient { get; private set; }
 
         public UnitOfWork(AppDbContext db) 
         {
@@ -23,6 +25,8 @@ namespace RecipeWebsiteMVC.DataAccess
             Recipe = new RecipeRepository(_db); 
             User = new AppUserRepository(_db);
             UserFavoritRecipe = new AppUserFavoritRecipeRepo(_db);
+            Direction = new DirectionRepo(_db); 
+            Ingredient = new IngredientRepo(_db);    
         }
 
         public void Save()

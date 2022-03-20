@@ -15,6 +15,7 @@ namespace RecipeWebsiteMVC.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string? Id { get; set; }
+        [Display(Name = "Skapad")]
         public DateTime DateOfCreation { get; set; } = DateTime.Now;
 
 

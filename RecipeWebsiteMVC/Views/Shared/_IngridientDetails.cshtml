@@ -1,10 +1,10 @@
 ﻿@model Ingredient
 
    <p>
+      <span>Order : @Html.DisplayFor(model => model.DisplayOrder) </span>   
       <span>@Html.DisplayFor(model => model.Unit)</span> 
       <span>@Html.DisplayFor(model => model.UnitType)</span>  
       <span>@Html.DisplayFor(model => model.Name) </span>   
-      <span>@Html.DisplayFor(model => model.DisplayOrder) </span>   
 
    </p>
 

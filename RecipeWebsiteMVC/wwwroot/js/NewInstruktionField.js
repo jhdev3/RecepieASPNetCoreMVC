@@ -9,7 +9,6 @@ NewDirectionButton.addEventListener("click", function () {
     //
     newFields.setAttribute("class", "form-group d-flex align-items-end mt-1");
     newFields.appendChild(CreateInputDirectionText(indexDirection));
-    newFields.appendChild(CreateDirectionDisplayOrder(indexDirection));
     newFields.appendChild(CreateDeleteButtonDir());  
     wrapperOut.appendChild(newFields);
     ++indexDirection;
@@ -41,11 +40,3 @@ function CreateDeleteButtonDir() {
     return deleteButton;
 }
 //Skulle kunna göras I controller också eller i Custom Add Recipe eller liknande
-function CreateDirectionDisplayOrder(i) {
-    let inputField = document.createElement("input");
-    inputField.setAttribute("type", "number");
-    inputField.setAttribute("name", `Directions[${i}].DisplayOrder`);
-    inputField.setAttribute("value", `${i}`);
-    inputField.setAttribute("style", "display: none");
-    return inputField;
-}

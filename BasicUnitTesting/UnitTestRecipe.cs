@@ -16,6 +16,8 @@ namespace BasicUnitTesting
     public class UnitTestRecipe
     {
         private Mock<IRecipeRepository> RecipeRepo;
+        private Mock<ICategoryRepo> CategoryRepo;
+
         private List<Recipe> _Recipes;
         private Mock<IUnitOfWork> UnitiOfWork;
 
@@ -25,7 +27,7 @@ namespace BasicUnitTesting
             RecipeRepo = new Mock<IRecipeRepository>();
             _Recipes = new List<Recipe>();
             UnitiOfWork = new Mock<IUnitOfWork>();
-
+            CategoryRepo = new Mock<ICategoryRepo>();   
         }
         #region index
         /*Index */
@@ -66,11 +68,13 @@ namespace BasicUnitTesting
 
         #region Create
         /*Create Post */
-
         //Todo Get Create om det finns tid och lust
         [Fact]
         public async void TestCreateRecipe_Fail()
         {
+            CategoryRepo.Setup(c => c.GetAllAsync()).ReturnsAsync(new List<Category>());
+
+            UnitiOfWork.Setup(u => u.Category).Returns(CategoryRepo.Object);
             //Arrange
             MangerRecipeController Mrc = new MangerRecipeController(UnitiOfWork.Object);
             Mrc.ModelState.AddModelError("Title", "Required");
@@ -192,6 +196,9 @@ namespace BasicUnitTesting
             //Arrange
             string id = "123Find";
             Recipe recipe = new Recipe { Id = id, Title = "TestGet" };
+            CategoryRepo.Setup(c => c.GetAllAsync()).ReturnsAsync(new List<Category>());
+            UnitiOfWork.Setup(u => u.Category).Returns(CategoryRepo.Object);
+
             RecipeRepo.Setup(c => c.GetDirectionsAndIngredients(id)).ReturnsAsync(recipe);//Test if category is null
             UnitiOfWork.Setup(u => u.Recipe).Returns(RecipeRepo.Object);
             MangerRecipeController Mrc = new MangerRecipeController(UnitiOfWork.Object);
@@ -225,6 +232,9 @@ namespace BasicUnitTesting
         [Fact]
         public async void TestPost_EditRecipe_FailModelState()
         {
+            CategoryRepo.Setup(c => c.GetAllAsync()).ReturnsAsync(new List<Category>());
+
+            UnitiOfWork.Setup(u => u.Category).Returns(CategoryRepo.Object);
             //Arrange
             string id = "123";
             Recipe recipe = new Recipe { Id = "123", Title = null };

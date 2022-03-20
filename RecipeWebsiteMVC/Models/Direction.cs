@@ -5,10 +5,10 @@ namespace RecipeWebsiteMVC.Models
 {
     public class Direction : BaseEntity, IComparable<Direction>
     {
-        [Required]
+        [Required(ErrorMessage = "Instruktion fält får inte var tomt")]
+        [Display(Name = "Instruktion")]
         public string Text { get; set; }
 
-        //Kanske behöver ett "Order attriubte" för att sätta ordningen på instruktionerna :)
         public int DisplayOrder { get; set; }
 
         public int CompareTo(Direction? other)

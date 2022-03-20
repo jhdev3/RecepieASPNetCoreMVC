@@ -11,7 +11,10 @@
         IAppUserRepo User { get; }
         IAppUserFavoritRecipeRepo UserFavoritRecipe { get; }
 
+        IingredientRepo Ingredient { get; }
+        IdirectionRepo Direction { get; }
 
+    
         public Task SaveAsync();
         public void Save();
     }

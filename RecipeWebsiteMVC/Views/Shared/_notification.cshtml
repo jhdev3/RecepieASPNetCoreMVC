@@ -1,13 +1,20 @@
 ﻿
 @if(TempData["Success"] != null)
 {
-    <div class="alert alert-success" role="alert">
-        <h4>@TempData["Success"]</h4>
-     </div>
+    <div class="alert alert-dismissible alert-success">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Success! </strong> @TempData["Success"].
+</div>
+   
 }
 @if(TempData["Error"] != null)
 {
     <div class="alert alert-danger" role="alert"> <!--Role är lite WCAG trams ;)-->
-        <h4>@TempData["Error"]</h4>
+        <h4></h4>
      </div>
+
+     <div class="alert alert-dismissible alert-danger">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Oh snap Error!</strong> @TempData["Error"].
+</div>
 }
